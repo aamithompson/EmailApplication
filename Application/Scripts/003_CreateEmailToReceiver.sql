@@ -1,0 +1,14 @@
+USE EmailApplicationDB;
+GO
+
+CREATE TABLE EmailToReceiver (
+	MailID INT NOT NULL FOREIGN KEY REFERENCES Email(MailID),
+	ReceiverID INT NOT NULL FOREIGN KEY REFERENCES Account(AccountID),
+	MailStatus INT NOT NULL,
+	Marked BIT NOT NULL,
+	Trashed BIT NOT NULL,
+	DateTrashed DATETIME,
+	DateSent DATETIME NOT NULL,
+	DateReceived DATETIME,
+	DateRead DATETIME
+);
