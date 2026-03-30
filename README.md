@@ -151,3 +151,32 @@ User credentials are validated securely during login then establish a session an
 User passwords are hashed using BCrypt before storage, ensuring no plaintext credentials are stored.
 
 ## 8. Future Work / Optimization Considerations
+
+### Client/Server Separation
+Transition the application to a client-server architecture, allowing multiple clients to connect to a centralized server. This would enable networked communication, improve security boundaries, and introduce challenges such as handling concurrent client interactions.
+
+### Asynchronous Processing
+Introduce asynchronous operations on the server side to handle multiple client requests efficiently. This would improve responsiveness and prevent blocking during database or network operations.
+
+### Indexing
+Improve database performance by adding indexes on frequently queried columns, particularly foreign keys such as `ReceiverID` and `SenderID`, to optimize inbox and sent mail retrieval.
+
+### Lazy Loading & Caching
+- **Lazy Loading** – Load inbox data in batches as the user scrolls, reducing initial load time and bandwidth usage.
+  
+- **Client-Side Caching** – Cache previously retrieved data and invalidate it based on server-side update timestamps to minimize redundant queries.
+
+### File Attachments
+Add support for file attachments by storing files on the server and associating them with emails. The client would retrieve metadata and download files via references.
+
+### Advanced Querying & Filtering
+Implement flexible querying capabilities for inbox management, including:
+- Filtering by status (e.g., read, marked, trashed, sent).
+  
+- Search by sender, subject, body, and date ranges.
+  
+- Support for compound queries (AND, OR, negation).
+### Drafts & Trash Management
+- **Drafts** – Allow users to save, edit, and send emails at a later time
+  
+- **Trash System** – Move deleted emails to a temporary storage with automatic cleanup after a defined retention period  
