@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "Hm4Fl09vWN0=",
+  "success": true,
+  "projectFilePath": "D:\\Users\\Pascal\\Documents\\Programming\\C#\\EmailApplication\\EmailApplication.Server\\EmailApplication.Server.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Pascal\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
+    "C:\\Users\\Pascal\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
+    "C:\\Users\\Pascal\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
