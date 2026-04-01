@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="EmailApplication.AccountLoginUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmailApplication"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" Padding="16">
+        <StackPanel Orientation="Vertical" Margin="64, 0" VerticalAlignment="Center">
+            <!-- Greeting -->
+            <StackPanel Margin="0, 0, 0, 32">
+                <TextBlock Text="Welcome to Email Application" TextAlignment="Center" FontSize="32" FontWeight="Bold"/>
+                <TextBlock Text="Please Sign In" TextAlignment="Center" FontSize="16" FontWeight="Bold"/>
+            </StackPanel>
+
+            <!-- Email Address -->
+            <StackPanel Orientation="Vertical" Margin="128, 0, 128, 8">
+                <TextBlock Text="Email Address" TextAlignment="Center" FontSize="16"/>
+                <TextBox x:Name="EmailAddressTextBox" Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Password -->
+            <StackPanel Orientation="Vertical" Margin="128, 0, 128, 8">
+                <TextBlock Text="Password" TextAlignment="Center" FontSize="16"/>
+                <PasswordBox x:Name="PasswordTextBox" HorizontalContentAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Sign In -->
+            <Button Click="SignIn_Click" Content="Sign In" Margin="128, 8, 128, 0"/>
+
+            <!-- Create Account -->
+            <StackPanel Orientation="Vertical" Margin="128, 64, 128, 0">
+                <TextBlock Text="Don't Have an Account?" TextAlignment="Center"/>
+                <Button Click="CreateNewAccountButton_Click" Content="Create New Account"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -19,9 +19,8 @@ namespace EmailApplication.Shared {
         public EmailStatus MailStatus { get; set; }
         public bool Marked { get; set; }
         public bool Trashed { get; set; }
-
         public DateTime DateSent { get; set; }
-        public DateTime DateReceived { get; set; }
+        public DateTime? DateReceived { get; set; }
         public DateTime? DateRead { get; set; }
 
         //From EmailToReceiverData and AccountData (recipients)
