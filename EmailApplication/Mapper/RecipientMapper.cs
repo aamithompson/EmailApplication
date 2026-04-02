@@ -1,8 +1,10 @@
-﻿namespace EmailApplication.Mapper {
-    public static class RecipientMapper {
+﻿using System.Text.RegularExpressions;
+
+namespace EmailApplication.Mapper {
+    public class RecipientMapper {
         public List<string> Map(string s) {
-            recipients = Regex.Replace(recipients, @"\s+", "");
-            List<string> recipientsAddresses = recipients.Split(',').ToList();
+            s = Regex.Replace(s, @"\s+", "");
+            List<string> recipientsAddresses = s.Split(',').ToList();
 
             return recipientsAddresses;
         }

@@ -14,14 +14,14 @@ namespace EmailApplication.Server.Controllers {
             _emailService = emailService;
         }
 
-        [HttpPost("get/email")]
-        public IActionResult GetEmail([FromBody] GetEmailDTO dto) {
+        [HttpGet("get/email/{mailID}")]
+        public IActionResult GetEmail(int mailID) {
             int requesterID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var result = _emailService.GetEmail(dto, requesterID);
+            var result = _emailService.GetEmail(mailID, requesterID);
             return Ok(result);
         }
 
-        [HttpPost("get/inbox")]
+        [HttpGet("get/inbox")]
         public IActionResult GetInbox([FromBody] GetInboxDTO dto) {
             int accountID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var result = _emailService.GetInbox(dto, accountID);

@@ -1,14 +1,63 @@
-﻿using System.Configuration;
+﻿using EmailApplication.Client;
+using EmailApplication.Mapper;
+using EmailApplication.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
 using System.Data;
+using System.Net.Http;
 using System.Windows;
 
-namespace EmailApplication
-{
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
-    {
-    }
+namespace EmailApplication {
+    public partial class App : Application {
+        private ServiceProvider _serviceProvider;
 
+        protected override void OnStartup(StartupEventArgs e) {
+            base.OnStartup(e);
+
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
+
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
+
+        private void ConfigureServices(IServiceCollection services) {
+            // HttpClient — single instance for the whole app
+            services.AddSingleton<HttpClient>(new HttpClient {
+                BaseAddress = new Uri("https://localhost:7001/api/")
+            });
+
+            // Client side services
+            services.AddSingleton<Session>();
+            services.AddTransient<RecipientMapper>();
+
+            // API client services
+            services.AddTransient<IAccountAPIService, AccountAPIService>();
+            services.AddTransient<IEmailAPIService, EmailAPIService>();
+
+            // ViewModels
+            services.AddTransient<AccountCreationViewModel>();
+            services.AddTransient<AccountNameViewModel>();
+            services.AddTransient<AccountProfileViewModel>();
+            services.AddTransient<AccountSecurityViewModel>();
+            services.AddTransient<CreateMailViewModel>();
+            services.AddTransient<EmailViewModel>();
+            services.AddTransient<FileViewModel>();
+            services.AddTransient<InboxEmailViewModel>();
+            services.AddTransient<InboxViewModel>();
+
+            // Windows
+            services.AddTransient<AccountCreationUserControl>();
+            services.AddTransient<AccountLoginUserControl>();
+            services.AddTransient<CreateMailControl>();
+            services.AddTransient<InboxControl>();
+            services.AddTransient<ViewMailControl>();
+        }
+
+        protected override void OnExit(ExitEventArgs e) {
+            _serviceProvider.Dispose();
+            base.OnExit(e);
+        }
+    }
 }

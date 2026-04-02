@@ -1,7 +1,9 @@
-﻿using EmailApplication.Services;
+﻿using EmailApplication.Enums;
+using EmailApplication.Services;
 using EmailApplication.Shared;
-using EmailApplication.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
 
 namespace EmailApplication.Server.Controllers {
 
@@ -12,6 +14,12 @@ namespace EmailApplication.Server.Controllers {
 
         public AccountController(IAccountService accountService) {
             _accountService = accountService;
+        }
+
+        [HttpGet("/get/account/{accountID}")]
+        public IActionResult GetAccount(int accountID) {
+            var result = _accountService.GetAccount(accountID);
+            return Ok(result);
         }
 
         [HttpPost("login")]

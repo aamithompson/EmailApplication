@@ -1,4 +1,5 @@
-﻿using EmailApplication.Data;
+﻿using EmailApplication.Client;
+using EmailApplication.Data;
 using Microsoft.Data.SqlClient;
 using System.Text;
 using System.Windows;
@@ -17,10 +18,10 @@ namespace EmailApplication
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        public MainWindow() {
+        private readonly Session _session;
+        public MainWindow(Session session) {
+            _session = session;
             InitializeComponent();
-            TestDatabaseConnection();
-
             Login();
         }
 
@@ -54,20 +55,6 @@ namespace EmailApplication
             }
 
             MainContent.Content = new CreateMailControl(this);
-        }
-
-        private void TestDatabaseConnection() {
-            try {
-                using (SqlConnection connection = DatabaseConnection.GetConnection()) {
-                    connection.Open();
-                    MessageBox.Show("Database connected successfully!", "Connection Test",
-                                  MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex) {
-                MessageBox.Show($"Connection failed: {ex.Message}", "Connection Test",
-                               MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
     }
 }

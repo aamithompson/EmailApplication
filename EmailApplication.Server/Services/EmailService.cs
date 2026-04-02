@@ -5,7 +5,7 @@ using EmailApplication.Shared;
 
 namespace EmailApplication.Services {
     public interface IEmailService {
-        EmailDTO GetEmail(GetEmailDTO dto, int requesterID);
+        EmailDTO GetEmail(int mailID, int requesterID);
         List<InboxEmailDTO> GetInbox(GetInboxDTO dto, int accountID);
         bool SendEmail(SendEmailDTO dto, int senderID);
     }
@@ -25,8 +25,8 @@ namespace EmailApplication.Services {
             _configuration = configuration;
         }
 
-        public EmailDTO GetEmail(GetEmailDTO dto, int requesterID) {
-            EmailData emailData = _emailRepository.GetEmailByMailID(dto.MailID);
+        public EmailDTO GetEmail(int mailID, int requesterID) {
+            EmailData emailData = _emailRepository.GetEmailByMailID(mailID);
             if(emailData == null) {
                 return null;
             }
