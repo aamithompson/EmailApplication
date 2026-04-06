@@ -167,6 +167,17 @@
           }
         }
       },
+      "Microsoft.Extensions.DependencyInjection/10.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.526.15411"
+          }
+        }
+      },
       "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.5": {
         "runtime": {
           "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -356,6 +367,13 @@
       "sha512": "sha512-OdQmN8LYcUEu20Fxii9mk68nHJGL+JPXF3w0+hxenf0oDDdDBA+ZV/S92FmIgAWAElowIiFA/g0x+8YB1g80Hg==",
       "path": "microsoft.extensions.caching.memory/9.0.13",
       "hashPath": "microsoft.extensions.caching.memory.9.0.13.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/10.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-v1SVsowG6YE1YnHVGmLWz57YTRCQRx9pH5ebIESXfm5isI9gA3QaMyg/oMTzPpXYZwSAVDzYItGJKfmV+pqXkQ==",
+      "path": "microsoft.extensions.dependencyinjection/10.0.5",
+      "hashPath": "microsoft.extensions.dependencyinjection.10.0.5.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.5": {
       "type": "package",

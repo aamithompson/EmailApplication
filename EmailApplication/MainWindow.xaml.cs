@@ -1,5 +1,4 @@
 ﻿using EmailApplication.Client;
-using EmailApplication.Data;
 using Microsoft.Data.SqlClient;
 using System.Text;
 using System.Windows;

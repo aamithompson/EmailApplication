@@ -27,7 +27,8 @@ namespace EmailApplication.Client.APIServices {
         }
 
         public async Task<List<InboxEmailDTO>> GetInbox(GetInboxDTO dto) {
-            var response = await _httpClient.GetAsync("email/get/inbox", dto);
+            //A GET operation, but using POST as the dto allows for easy complex querying.
+            var response = await _httpClient.PostAsJsonAsync("email/get/inbox", dto);
 
             return await response.Content.ReadFromJsonAsync<List<InboxEmailDTO>>();
         }

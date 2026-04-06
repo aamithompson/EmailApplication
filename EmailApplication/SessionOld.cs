@@ -1,7 +1,4 @@
-﻿using EmailApplication.Data;
-using EmailApplication.Repositories;
-
-namespace EmailApplication {
+﻿namespace EmailApplication {
     public static class SessionOld {
         //Should be placed in a config or environment variable, but for practical purposes is here.
         //Do not place actual sensitive information in this application.

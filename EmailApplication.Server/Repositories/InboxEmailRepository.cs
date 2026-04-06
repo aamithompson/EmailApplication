@@ -1,5 +1,4 @@
 ﻿using EmailApplication.Data;
-using EmailApplication.ViewModel;
 using Microsoft.Data.SqlClient;
 
 namespace EmailApplication.Repositories {

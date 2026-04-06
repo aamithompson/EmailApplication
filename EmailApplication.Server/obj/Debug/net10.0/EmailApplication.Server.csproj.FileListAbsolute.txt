@@ -1,0 +1,8 @@
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.csproj.AssemblyReference.cache
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.AssemblyInfoInputs.cache
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.AssemblyInfo.cs
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.csproj.CoreCompileInputs.cache
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.MvcApplicationPartsAssemblyInfo.cs
+D:\Users\Pascal\Documents\Programming\C#\EmailApplication\EmailApplication.Server\obj\Debug\net10.0\EmailApplication.Server.MvcApplicationPartsAssemblyInfo.cache

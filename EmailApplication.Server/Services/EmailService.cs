@@ -32,7 +32,7 @@ namespace EmailApplication.Services {
             }
 
             AccountData senderData = _accountRepository.GetAccountDataByID(emailData.SenderID);
-            List<EmailToReceiverData> receiverDatas = _emailRoReceiverRepository.GetReceiversByMailID(dto.MailID);
+            List<EmailToReceiverData> receiverDatas = _emailRoReceiverRepository.GetReceiversByMailID(mailID);
             List<string> recipients = receiverDatas.Select(r => _accountRepository.GetAccountDataByID(r.ReceiverID).EmailAddress).ToList();
             EmailToReceiverData requesterData = receiverDatas.Single(r => r.ReceiverID == requesterID);
 

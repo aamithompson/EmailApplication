@@ -1,6 +1,7 @@
 ﻿using EmailApplication.Client;
 using EmailApplication.Mapper;
 using EmailApplication.ViewModel;
+using EmailApplication.Client.APIServices;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using System.Data;
@@ -30,7 +31,6 @@ namespace EmailApplication {
 
             // Client side services
             services.AddSingleton<Session>();
-            services.AddTransient<RecipientMapper>();
 
             // API client services
             services.AddTransient<IAccountAPIService, AccountAPIService>();

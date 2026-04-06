@@ -1,7 +1,4 @@
-﻿using EmailApplication.Data;
-using EmailApplication.Repositories;
-using EmailApplication.ViewModel;
-using EmailApplication.Services;
+﻿using EmailApplication.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
