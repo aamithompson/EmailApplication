@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿//==============================================================================
+// Filename: Status.cs
+// Author: Aaron Thompson
+// Date Created: 3/31/2026
+// Last Updated: 3/31/2026
+//
+// Description: Enum for the transit status of an email. This data is represented
+// in the EmailToReceiver table.
+//==============================================================================
 namespace EmailApplication.Enums {
     public enum EmailStatus {
         Failed = -1,
@@ -13,4 +16,6 @@ namespace EmailApplication.Enums {
         Received = 3,
         Read = 4,
     }
-}
+} //END NAMESPACE EmailApplication.Enums
+//==============================================================================
+//==============================================================================

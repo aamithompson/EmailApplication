@@ -1,14 +1,13 @@
 ﻿//==============================================================================
-// Filename: InboxEmailDTO.cs
+// Filename: InboxEmailViewModel.cs
 // Author: Aaron Thompson
-// Date Created: 4/1/2026
-// Last Updated: 4/9/2026
+// Date Created: 3/18/2026
+// Last Updated: 3/18/2026
 //
-// Description: Data transfer object (DTO) for individual preview emails in the
-// inbox when user requests their inbox it is sent from the server to client.
+// Description: View Model for email previews which are listed in the inbox.
 //==============================================================================
-namespace EmailApplication.Shared {
-    public class InboxEmailDTO {
+namespace EmailApplication.Client.ViewModel {
+    public class InboxEmailViewModel {
 
 // VARIABLE(s)
 //------------------------------------------------------------------------------
@@ -17,8 +16,8 @@ namespace EmailApplication.Shared {
         public string Subject { get; set; }
         public string Preview { get; set; }
         public DateTime? DateReceived { get; set; }
-        public DateTime? DateRead { get; set; }
+        public bool IsRead { get; set; }
     }
-} //END NAMESPACE EmailApplication.Shared
+} //END NAMESPACE EmailApplication.Client.ViewModel
 //==============================================================================
 //==============================================================================

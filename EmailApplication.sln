@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.4.11612.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailApplication.Client", "EmailApplication\EmailApplication.Client.csproj", "{6633C1D5-1F6B-4839-9C1D-3329D72D023D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailApplication.Client", "EmailApplication.Client\EmailApplication.Client.csproj", "{6633C1D5-1F6B-4839-9C1D-3329D72D023D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailApplicationDataSeeding", "EmailApplicationDataSeeding\EmailApplicationDataSeeding.csproj", "{2AFA5DE5-91C7-427D-8D35-AEF07D22941A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailApplicationDataSeeding", "EmailApplication.DataSeeding\EmailApplicationDataSeeding.csproj", "{2AFA5DE5-91C7-427D-8D35-AEF07D22941A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailApplication.Server", "EmailApplication.Server\EmailApplication.Server.csproj", "{2805C198-DB3D-45AE-AE72-36D25CCF456C}"
 EndProject

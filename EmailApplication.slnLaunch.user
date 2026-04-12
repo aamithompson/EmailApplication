@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Full-Stack",
+    "Projects": [
+      {
+        "Path": "EmailApplication\\EmailApplication.Client.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "EmailApplication.Server\\EmailApplication.Server.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,20 +1,20 @@
 ﻿//==============================================================================
-// Filename: SendAccountLoginDTO.cs
+// Filename: FileViewModel.cs
 // Author: Aaron Thompson
-// Date Created: 3/30/2026
-// Last Updated: 3/31/2026
+// Date Created: 3/10/2026
+// Last Updated: 3/10/2026
 //
-// Description: Data transfer object (DTO) for when users send account login
-// creditials from the client to server.
+// Description: View Model for a files. Does not contain the file, but the link.
 //==============================================================================
-namespace EmailApplication.Shared {
-    public class SendAccountLoginDTO {
+namespace EmailApplication.Client.ViewModel {
+    public class FileViewModel {
 
 // VARIABLE(s)
 //------------------------------------------------------------------------------
-        public string EmailAddress { get; set; }
-        public string Password { get; set; }
+        public string FileName { get; set; }
+        public int Size { get; set; }
+        public DateTime DateUploaded { get; set; }
     }
-} //END NAMESPACE EmailApplication.Shared
+} //END NAMESPACE EmailApplication.Client.ViewModel
 //==============================================================================
 //==============================================================================

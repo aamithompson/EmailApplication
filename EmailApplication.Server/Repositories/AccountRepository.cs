@@ -14,8 +14,14 @@ namespace EmailApplication.Repositories {
     }
 
     public class AccountRepository : IAccountRepository{
+        private readonly DatabaseConnection _db;
+
+        public AccountRepository(DatabaseConnection db) {
+            _db = db;
+        }
+
         public AccountData GetAccountDataByID(int accountID){
-            using(SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"
@@ -44,7 +50,7 @@ namespace EmailApplication.Repositories {
         }
 
         public AccountData GetAccountDataByEmailAddress(string emailAddress){
-            using(SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"
@@ -75,7 +81,7 @@ namespace EmailApplication.Repositories {
         //TODO: Write check for existing account
         //TODO: Write error handling
         public int InsertAccount(AccountData accountData) {
-            using(SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"

@@ -3,9 +3,12 @@
 namespace EmailApplication.Data
 {
     public class DatabaseConnection {
-        private static string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["EmailApplicationDB"].ConnectionString;
+        private readonly string _connectionString;
+        public DatabaseConnection(IConfiguration configuration) {
+            _connectionString = configuration.GetConnectionString("EmailApplicationDB");
+        }
 
-        public static SqlConnection GetConnection() {
+        public SqlConnection GetConnection() {
             return new SqlConnection(_connectionString);
         }
     }

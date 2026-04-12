@@ -8,10 +8,17 @@ namespace EmailApplication.Repositories {
 
     public class InboxEmailRepository : IInboxEmailRepository {
         public const int _BODYPREVIEWSIZE = 100;
+
+        private readonly DatabaseConnection _db;
+
+        public InboxEmailRepository(DatabaseConnection db) {
+            _db = db;
+        }
+
         public List<InboxEmailData> GetInboxEmailDatas(int accountID) {
             List<InboxEmailData> emails = new List<InboxEmailData>();
 
-            using (SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using (SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @$"

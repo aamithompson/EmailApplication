@@ -15,9 +15,14 @@ namespace EmailApplication.Repositories {
     }
 
     public class EmailRepository : IEmailRepository {
+        private readonly DatabaseConnection _db;
+
+        public EmailRepository(DatabaseConnection db) {
+            _db = db;
+        }
 
         public EmailData GetEmailByMailID(int mailID) {
-            using(SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"
@@ -45,7 +50,7 @@ namespace EmailApplication.Repositories {
         }
 
         public int InsertEmail(EmailData emailData) {
-            using(SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"

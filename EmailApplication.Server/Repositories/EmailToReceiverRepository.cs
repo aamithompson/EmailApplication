@@ -14,9 +14,15 @@ namespace EmailApplication.Repositories {
     }
 
     public class EmailToReceiverRepository : IEmailRoReceiverRepository {
+        private readonly DatabaseConnection _db;
+
+        public EmailToReceiverRepository(DatabaseConnection db) {
+            _db = db;
+        }
+
         public List<EmailToReceiverData> GetReceiversByMailID(int mailID) {
             List<EmailToReceiverData> receivers = new List<EmailToReceiverData>();
-            using (SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using (SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"
@@ -61,7 +67,7 @@ namespace EmailApplication.Repositories {
 
         public List<EmailToReceiverData> GetEmailsByReceiverID(int receiverID) {
             List<EmailToReceiverData> emails = new List<EmailToReceiverData>();
-            using (SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using (SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"
@@ -105,7 +111,7 @@ namespace EmailApplication.Repositories {
         }
 
         public void InsertEmailToReceiver(EmailToReceiverData emailToReceiverData) {
-            using (SqlConnection connection = DatabaseConnection.GetConnection()) {
+            using (SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
 
                 string query = @"
