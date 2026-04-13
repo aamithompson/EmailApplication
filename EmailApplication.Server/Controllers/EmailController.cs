@@ -1,20 +1,36 @@
-﻿using EmailApplication.Services;
+﻿//==============================================================================
+// Filename: EmailController.cs
+// Author: Aaron Thompson
+// Date Created: 3/31/2026
+// Last Updated: 4/9/2026
+//
+// Description: Handles processing incoming http requests relating to emails
+// and returns a response.
+//==============================================================================
+using EmailApplication.Services;
 using EmailApplication.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-
+//------------------------------------------------------------------------------
 namespace EmailApplication.Server.Controllers {
 
     [ApiController]
     [Route("api/[controller]")]
     public class EmailController : ControllerBase {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly IEmailService _emailService;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public EmailController(IEmailService emailService) {
             _emailService = emailService;
         }
 
+// HTTP FUNCTION(s)
+//------------------------------------------------------------------------------
         [HttpGet("test")]
         public IActionResult Test() {
             return Ok("EmailController is reachable");
@@ -45,4 +61,6 @@ namespace EmailApplication.Server.Controllers {
             return Ok(result);
         }
     }
-}
+} //END NAMESPACE EmailApplication.Services.Controllers
+//==============================================================================
+//==============================================================================

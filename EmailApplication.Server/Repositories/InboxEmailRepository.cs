@@ -1,20 +1,38 @@
-﻿using EmailApplication.Data;
+﻿//==============================================================================
+// Filename: InboxEmailRepository.cs
+// Author: Aaron Thompson
+// Date Created: 3/30/2026
+// Last Updated: 4/7/2026
+//
+// Description: Repository to access email table, however, this repository is
+// optimized for selecting specifically what is listed information in the inbox
+// to prevent having to search the account and email to receiver table everytime
+// for a new email.
+//==============================================================================
 using Microsoft.Data.SqlClient;
-
-namespace EmailApplication.Repositories {
+using EmailApplication.Server.Data;
+//------------------------------------------------------------------------------
+namespace EmailApplication.Server.Repositories {
     public interface IInboxEmailRepository {
         List<InboxEmailData> GetInboxEmailDatas(int accountID);
     }
 
     public class InboxEmailRepository : IInboxEmailRepository {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         public const int _BODYPREVIEWSIZE = 100;
 
         private readonly DatabaseConnection _db;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public InboxEmailRepository(DatabaseConnection db) {
             _db = db;
         }
 
+// DATABASE QUERY FUNCTION(s)
+//------------------------------------------------------------------------------
         public List<InboxEmailData> GetInboxEmailDatas(int accountID) {
             List<InboxEmailData> emails = new List<InboxEmailData>();
 
@@ -58,4 +76,6 @@ namespace EmailApplication.Repositories {
             return emails;
         }
     }
-}
+} //END NAMESPACE EmailApplication.Server.Repositories
+//==============================================================================
+//==============================================================================

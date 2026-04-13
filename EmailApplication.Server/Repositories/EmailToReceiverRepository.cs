@@ -1,25 +1,35 @@
-﻿using EmailApplication.Data;
-using EmailApplication.Enums;
+﻿//==============================================================================
+// Filename: EmailToReceiverRepository.cs
+// Author: Aaron Thompson
+// Date Created: 3/30/2026
+// Last Updated: 4/7/2026
+//
+// Description: Repository to access email to receiver table.
+//==============================================================================
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EmailApplication.Repositories {
+using EmailApplication.Server.Data;
+using EmailApplication.Enums;
+//------------------------------------------------------------------------------
+namespace EmailApplication.Server.Repositories {
     public interface IEmailRoReceiverRepository {
         List<EmailToReceiverData> GetReceiversByMailID(int mailID);
         public void InsertEmailToReceiver(EmailToReceiverData emailToReceiverData);
     }
 
     public class EmailToReceiverRepository : IEmailRoReceiverRepository {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly DatabaseConnection _db;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public EmailToReceiverRepository(DatabaseConnection db) {
             _db = db;
         }
 
+// DATABASE QUERY FUNCTION(s)
+//------------------------------------------------------------------------------
         public List<EmailToReceiverData> GetReceiversByMailID(int mailID) {
             List<EmailToReceiverData> receivers = new List<EmailToReceiverData>();
             using (SqlConnection connection = _db.GetConnection()) {
@@ -147,4 +157,6 @@ namespace EmailApplication.Repositories {
             }
         }
     }
-}
+} //END NAMESPACE EmailApplication.Server.Repositories
+//==============================================================================
+//==============================================================================

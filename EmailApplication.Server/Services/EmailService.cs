@@ -1,9 +1,18 @@
-﻿using EmailApplication.Data;
+﻿//==============================================================================
+// Filename: EmailService.cs
+// Author: Aaron Thompson
+// Date Created: 3/30/2026
+// Last Updated: 4/7/2026
+//
+// Description: Email services which handles packaging information from the
+// repositories and handles logic.
+//==============================================================================
+using EmailApplication.Server.Data;
 using EmailApplication.Enums;
-using EmailApplication.Repositories;
+using EmailApplication.Server.Repositories;
 using EmailApplication.Shared;
-
-namespace EmailApplication.Services {
+//------------------------------------------------------------------------------
+namespace EmailApplication.Server.Services {
     public interface IEmailService {
         EmailDTO GetEmail(int mailID, int requesterID);
         List<InboxEmailDTO> GetInbox(GetInboxDTO dto, int accountID);
@@ -11,12 +20,17 @@ namespace EmailApplication.Services {
     }
 
     public class EmailService : IEmailService {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly IEmailRepository _emailRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IEmailRoReceiverRepository _emailRoReceiverRepository;
         private readonly IInboxEmailRepository _inboxEmailRepository;
         private readonly IConfiguration _configuration;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public EmailService(IEmailRepository emailRepository, IAccountRepository accountRepository, IEmailRoReceiverRepository emailRoReceiverRepository, IInboxEmailRepository inboxEmailRepository, IConfiguration configuration) {
             _emailRepository = emailRepository;
             _accountRepository = accountRepository;
@@ -25,6 +39,8 @@ namespace EmailApplication.Services {
             _configuration = configuration;
         }
 
+// SERVICE FUNCTION(s)
+//------------------------------------------------------------------------------
         public EmailDTO GetEmail(int mailID, int requesterID) {
             EmailData emailData = _emailRepository.GetEmailByMailID(mailID);
             if(emailData == null) {
@@ -119,4 +135,6 @@ namespace EmailApplication.Services {
             return true;
         }
     }
-}
+} //END NAMESPACE EmailApplication.Server.Services
+//==============================================================================
+//==============================================================================

@@ -1,26 +1,35 @@
-﻿using EmailApplication.Data;
+﻿//==============================================================================
+// Filename: EmailRepository.cs
+// Author: Aaron Thompson
+// Date Created: 3/30/2026
+// Last Updated: 4/7/2026
+//
+// Description: Repository to access email table.
+//==============================================================================
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EmailApplication.Repositories {
+using EmailApplication.Server.Data;
+//------------------------------------------------------------------------------
+namespace EmailApplication.Server.Repositories {
     public interface IEmailRepository {
         EmailData GetEmailByMailID(int mailID);
         int InsertEmail(EmailData emailData);
-        //List<EmailData> GetEmailsBySenderID(int senderID);
     }
 
     public class EmailRepository : IEmailRepository {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly DatabaseConnection _db;
 
+
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public EmailRepository(DatabaseConnection db) {
             _db = db;
         }
 
+// DATABASE QUERY FUNCTION(s)
+//------------------------------------------------------------------------------
         public EmailData GetEmailByMailID(int mailID) {
             using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
@@ -68,7 +77,7 @@ namespace EmailApplication.Repositories {
                 }
             }
         }
-
-        //public List<EmailData> GetEmailsBySenderID(int senderID){}
     }
-}
+} //END NAMESPACE EmailApplication.Server.Repositories
+//==============================================================================
+//==============================================================================

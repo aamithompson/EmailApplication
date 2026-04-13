@@ -1,13 +1,22 @@
-﻿using EmailApplication.Data;
-using EmailApplication.Repositories;
+﻿//==============================================================================
+// Filename: AccountService.cs
+// Author: Aaron Thompson
+// Date Created: 3/30/2026
+// Last Updated: 4/1/2026
+//
+// Description: Account services which handles packaging information from the
+// repository and handles logic to prepare for JWT.
+//==============================================================================
+using EmailApplication.Server.Data;
+using EmailApplication.Server.Repositories;
 using EmailApplication.Shared;
 using EmailApplication.Enums;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
-
-namespace EmailApplication.Services {
+//------------------------------------------------------------------------------
+namespace EmailApplication.Server.Services {
     public interface IAccountService {
         AccountDTO GetAccount(int accountID);
         CreateAccountResponseDTO CreateAccount(CreateAccountDTO dto);
@@ -15,14 +24,21 @@ namespace EmailApplication.Services {
     }
 
     public class AccountService : IAccountService {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly IAccountRepository _accountRepository;
         private readonly IConfiguration _configuration;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public AccountService(IAccountRepository accountRepository, IConfiguration configuration) {
             _accountRepository = accountRepository;
             _configuration = configuration;
         }
 
+// SERVICE FUNCTION(s)
+//------------------------------------------------------------------------------
         public AccountDTO GetAccount(int accountID) {
             AccountData accountData = _accountRepository.GetAccountDataByID(accountID);
             if(accountData == null) {
@@ -81,6 +97,8 @@ namespace EmailApplication.Services {
             };
         }
 
+// JWT FUNCTION(s)
+//------------------------------------------------------------------------------
         private string GenerateToken(AccountData account) {
             var claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, account.AccountID.ToString()),
@@ -102,4 +120,6 @@ namespace EmailApplication.Services {
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-}
+} //END NAMESPACE EmailApplication.Server.Services
+//==============================================================================
+//==============================================================================

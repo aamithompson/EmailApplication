@@ -1,22 +1,36 @@
-﻿using EmailApplication.Enums;
+﻿//==============================================================================
+// Filename: AccountController.cs
+// Author: Aaron Thompson
+// Date Created: 3/31/2026
+// Last Updated: 4/7/2026
+//
+// Description: Handles processing incoming http requests relating to accounts
+// and returns a response.
+//==============================================================================
+using EmailApplication.Enums;
 using EmailApplication.Services;
 using EmailApplication.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
-
+//------------------------------------------------------------------------------
 namespace EmailApplication.Server.Controllers {
 
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase {
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly IAccountService _accountService;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public AccountController(IAccountService accountService) {
             _accountService = accountService;
         }
 
+// HTTP FUNCTION(s)
+//------------------------------------------------------------------------------
         [Authorize]
         [HttpGet("/get/account/{accountID}")]
         public IActionResult GetAccount(int accountID) {
@@ -28,7 +42,7 @@ namespace EmailApplication.Server.Controllers {
         public IActionResult Login([FromBody] SendAccountLoginDTO dto) {
             var result = _accountService.Login(dto);
             
-            if(result.Response == LoginResponse.Succesful) {
+            if(result.Response == LoginResponse.Successful) {
                 return Ok(result);
             }
 
@@ -46,4 +60,6 @@ namespace EmailApplication.Server.Controllers {
             return Conflict(result);
         }
     }
-}
+} //END NAMESPACE EmailApplication.Services.Controllers
+//==============================================================================
+//==============================================================================

@@ -1,12 +1,15 @@
-﻿using EmailApplication.Data;
+﻿//==============================================================================
+// Filename: AccountRepository.cs
+// Author: Aaron Thompson
+// Date Created: 3/30/2026
+// Last Updated: 4/7/2026
+//
+// Description: Repository to access account table.
+//==============================================================================
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EmailApplication.Repositories {
+using EmailApplication.Server.Data;
+//------------------------------------------------------------------------------
+namespace EmailApplication.Server.Repositories {
     public interface IAccountRepository {
         AccountData GetAccountDataByID(int accountID);
         AccountData GetAccountDataByEmailAddress(string emailAddress);
@@ -14,12 +17,19 @@ namespace EmailApplication.Repositories {
     }
 
     public class AccountRepository : IAccountRepository{
+
+// VARIABLE(s)
+//------------------------------------------------------------------------------
         private readonly DatabaseConnection _db;
 
+// CONSTRUCTOR(s)
+//------------------------------------------------------------------------------
         public AccountRepository(DatabaseConnection db) {
             _db = db;
         }
 
+// DATABASE QUERY FUNCTION(s)
+//------------------------------------------------------------------------------
         public AccountData GetAccountDataByID(int accountID){
             using(SqlConnection connection = _db.GetConnection()) {
                 connection.Open();
@@ -101,4 +111,6 @@ namespace EmailApplication.Repositories {
             }
         }
     }
-}
+} //END NAMESPACE EmailApplication.Server.Repositories
+//==============================================================================
+//==============================================================================
