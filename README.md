@@ -1,16 +1,16 @@
 # Desktop Email Application (WPF, C#, T-SQL)
 ## 1. Overview
-A desktop email application built with **WPF (C#)** and **SQL Server**, designed using a **layered architecture** to separate presentation, business logic, and data access.
+A desktop email application built with **WPF (C#)** and **SQL Server**, designed using a **layered client-server architecture** to separate presentation, business logic, and data access across two distinct tiers.
 
-The application implements **MVVM**, along with **service** and **repository** layers, to support authentication, email composition, and inbox management. It is backed by a **normalized relational database schema** designed to efficiently handle multi-recipient email delivery.
+The client implements **MVVM**, along with **mapper** and **API service** layers, to support authentication, email composition, and inbox management. The server exposes HTTP endpoints consumed by the client, backed by **service** and **repository** layers and a **normalized relational database schema** designed to efficiently handle multi-recipient email delivery.
 
 ## 2. Features
 
 ### Login / Account Creation
 
-- **Login** - Through the login screen, you can sign in to an existing account which then takes you to your designated inbox of mail.
+- **Login** - Through the login screen, you can sign in to an existing account, which authenticates against the server and returns a JWT used for subsequent requests.
 
-- **Account** - Can create a new account with an associated name, email address, and password which is taken and securely hashed with BCrypt.
+- **Account** - Can create a new account with an associated name, email address, and password, which is securely hashed with BCrypt on the server before storage.
 
 ### Inbox
 
@@ -58,9 +58,34 @@ The application implements **MVVM**, along with **service** and **repository** l
 
 ![Creating Mail](Screenshots/CreateMail.png)
 
-## 5. Architecture
+## 4. Architecture
+The application is split into a client and a server that communicate over HTTP. The client sends requests with a JWT for authentication; the server validates the token before processing.
 
-### Data Models, View Models, and View
+### Client
+*View → View Model → Mapper → API Services*
+
+- **View** – WPF UI components responsible for rendering the user interface.
+
+- **View Model** – MVVM layer managing state and commands, binding the view to underlying data.
+
+- **Mapper** – Translates between server-returned DTOs and view model representations consumed by the UI.
+
+- **API Services** – HTTP client layer responsible for constructing and dispatching requests to the server, including attaching the JWT to request headers.
+
+### Server
+*Controller → Services → Repository → Database*
+
+- **Controller** – Exposes HTTP endpoints, handles routing, validates incoming JWTs, and delegates to the service layer.
+
+- **Services** – Contains business logic; mediates between the controller and repository, and organizes data before returning responses.
+
+- **Repository** – Mediates between the service layer and the database, executing queries and mapping results to data models.
+
+- **Database** – SQL Server instance storing all application data.
+
+### DTOs, Data Models, View Models, and View
+
+- **Data Transfer Objects (DTOs)** - An object utilized to help with transferring data between the client and server. This object is what is received between communication between the two before translating it for the next layer.
 
 - **Data Models** - A direct interface with the data representation of an arbitrary record of a specific table. These were kept simple with only simple fields that correspond with the attributes of the table these classes represented.
 
@@ -69,7 +94,7 @@ The application implements **MVVM**, along with **service** and **repository** l
 | Field Name | Data Type | Derived From |
 |-|-|-|
 | Subject | `string` | `EmailData` |
-| Sender | `string` | `Email Data` -> `AccountData` |
+| Sender | `string` | `EmailData` -> `AccountData` |
 | Recipients | `List<string>` | `EmailData` -> `AccountData` |
 | Body | `string` | `EmailData` |
 | DateCreated | `DateTime` | `EmailData` |
@@ -90,7 +115,7 @@ The application implements **MVVM**, along with **service** and **repository** l
 
 - The current repositories are the `AccountRepository`, `EmailRepository`, `EmailToReceiverRepository`, and `InboxEmailRepository`.
 
-## 6. Database Design
+## 5. Database Design
 The database is designed using a normalized relational schema to minimize redundancy and support efficient querying. In addition, the database supports one account sending many emails and one email being received by many accounts.
 
 ### Account:
@@ -142,18 +167,18 @@ As to note, `MailStatus` is represented as an `INT` but in the application casts
 | Received | 3 |
 | Read | 4 |
 
-## 7. Security
+## 6. Security
 
-### Session / Token
-User credentials are validated securely during login then establish a session and give a token to the user for that session.
+### JWT (JSON Web Token)
+After the server validates user credentials at login, it issues a signed JWT. The client stores this token and attaches it to the `Authorization` header of every subsequent HTTP request. The server validates the token on each request before allowing access to protected endpoints. This token on the client side is also stored in `Session` and default `Authorization` header.
 
 ### BCrypt
 User passwords are hashed using BCrypt before storage, ensuring no plaintext credentials are stored.
 
-## 8. Future Work / Optimization Considerations
+## 7. Future Work / Optimization Considerations
 
-### Client/Server Separation
-Transition the application to a client-server architecture, allowing multiple clients to connect to a centralized server. This would enable networked communication, improve security boundaries, and introduce challenges such as handling concurrent client interactions.
+### JWT Refresh Tokens
+Implement refresh token rotation so that short-lived access tokens can be renewed without requiring the user to re-authenticate, improving both security and session continuity.
 
 ### Asynchronous Processing
 Introduce asynchronous operations on the server side to handle multiple client requests efficiently. This would improve responsiveness and prevent blocking during database or network operations.
@@ -181,5 +206,5 @@ Implement flexible querying capabilities for inbox management, including:
   
 - **Trash System** – Move deleted emails to a temporary storage with automatic cleanup after a defined retention period  
 
-## 9. License
+## 8. License
 This project is licensed under the MIT License - see the `LICENSE` file for details.
