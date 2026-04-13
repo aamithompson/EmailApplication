@@ -180,3 +180,6 @@ Implement flexible querying capabilities for inbox management, including:
 - **Drafts** – Allow users to save, edit, and send emails at a later time
   
 - **Trash System** – Move deleted emails to a temporary storage with automatic cleanup after a defined retention period  
+
+## 9. License
+This project is licensed under the MIT License - see the `LICENSE` file for details.
