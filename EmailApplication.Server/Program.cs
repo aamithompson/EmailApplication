@@ -1,12 +1,9 @@
-using EmailApplication.Data;
-using EmailApplication.Repositories;
-using EmailApplication.Services;
+using EmailApplication.Server.Data;
+using EmailApplication.Server.Repositories;
+using EmailApplication.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi;
-using System.Reflection.Metadata;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

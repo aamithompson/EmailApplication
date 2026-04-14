@@ -93,7 +93,7 @@ namespace EmailApplication.Server.Services {
                 Token = token,
                 AccountName = account.AccountName,
                 EmailAddress = account.EmailAddress,
-                Response = LoginResponse.Succesful
+                Response = LoginResponse.Successful
             };
         }
 
