@@ -7,7 +7,7 @@
 // Description: Handles processing incoming http requests relating to emails
 // and returns a response.
 //==============================================================================
-using EmailApplication.Services;
+using EmailApplication.Server.Services;
 using EmailApplication.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
