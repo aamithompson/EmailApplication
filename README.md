@@ -57,8 +57,42 @@ The client implements **MVVM**, along with **mapper** and **API service** layers
 *Compose interface supporting multi-recipient email sending*
 
 ![Creating Mail](Screenshots/CreateMail.png)
+## 4. Installation & Usage (Docker)
 
-## 4. Architecture
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) (for the WPF client)
+
+### Setup
+1. Clone the repository
+
+2. Run the following from the solution root:
+```bash
+    docker-compose up --build
+```
+
+3. Wait for both containers to show as running. You can verify the server is up at:
+- http://localhost:5139/swagger
+
+### Running the Client
+Build and launch the WPF client from Visual Studio, or run multiple instances via PowerShell:
+```powershell
+Start-Process ".\EmailApplication.Client\bin\Debug\net10.0-windows7.0\EmailApplication.Client.exe"
+```
+
+### Resetting the Database
+To wipe the database and start fresh:
+```bash
+docker-compose down -v
+docker-compose up
+```
+
+### Stopping
+```bash
+docker-compose down
+```
+
+## 5. Architecture
 The application is split into a client and a server that communicate over HTTP. The client sends requests with a JWT for authentication; the server validates the token before processing.
 
 ### Client
@@ -115,7 +149,7 @@ The application is split into a client and a server that communicate over HTTP. 
 
 - The current repositories are the `AccountRepository`, `EmailRepository`, `EmailToReceiverRepository`, and `InboxEmailRepository`.
 
-## 5. Database Design
+## 6. Database Design
 The database is designed using a normalized relational schema to minimize redundancy and support efficient querying. In addition, the database supports one account sending many emails and one email being received by many accounts.
 
 ### Account:
@@ -167,7 +201,7 @@ As to note, `MailStatus` is represented as an `INT` but in the application casts
 | Received | 3 |
 | Read | 4 |
 
-## 6. Security
+## 7. Security
 
 ### JWT (JSON Web Token)
 After the server validates user credentials at login, it issues a signed JWT. The client stores this token and attaches it to the `Authorization` header of every subsequent HTTP request. The server validates the token on each request before allowing access to protected endpoints. This token on the client side is also stored in `Session` and default `Authorization` header.
@@ -175,7 +209,7 @@ After the server validates user credentials at login, it issues a signed JWT. Th
 ### BCrypt
 User passwords are hashed using BCrypt before storage, ensuring no plaintext credentials are stored.
 
-## 7. Future Work / Optimization Considerations
+## 8. Future Work / Optimization Considerations
 
 ### JWT Refresh Tokens
 Implement refresh token rotation so that short-lived access tokens can be renewed without requiring the user to re-authenticate, improving both security and session continuity.
@@ -206,5 +240,5 @@ Implement flexible querying capabilities for inbox management, including:
   
 - **Trash System** – Move deleted emails to a temporary storage with automatic cleanup after a defined retention period  
 
-## 8. License
+## 9. License
 This project is licensed under the MIT License - see the `LICENSE` file for details.
