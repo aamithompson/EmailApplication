@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 
 // Database
 builder.Services.AddScoped<DatabaseConnection>();
+Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // Repositories
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -82,7 +83,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpLogging();
+
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
@@ -90,6 +93,21 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseHttpLogging();
+int retries = 10;
+while (retries > 0) {
+    try {
+        using var conn = app.Services.CreateScope()
+            .ServiceProvider
+            .GetRequiredService<DatabaseConnection>()
+            .GetConnection();
+        conn.Open();
+        Console.WriteLine("Database connection successful.");
+        break;
+    } catch (Exception ex) {
+        retries--;
+        Console.WriteLine($"Database not ready, retrying... ({retries} attempts left)");
+        Thread.Sleep(3000);
+    }
+}
 
 app.Run();

@@ -3,11 +3,11 @@
     "Name": "Full-Stack",
     "Projects": [
       {
-        "Path": "EmailApplication\\EmailApplication.Client.csproj",
+        "Path": "EmailApplication.Server\\EmailApplication.Server.csproj",
         "Action": "Start"
       },
       {
-        "Path": "EmailApplication.Server\\EmailApplication.Server.csproj",
+        "Path": "EmailApplication.Client\\EmailApplication.Client.csproj",
         "Action": "Start"
       }
     ]

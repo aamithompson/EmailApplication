@@ -37,7 +37,7 @@ namespace EmailApplication {
 
             try {
                 CreateAccountResponseDTO result = await _accountAPIService.CreateAccount(AccountMapper.AccountCreationViewModelToCreateAccountDTO(accountCreationViewModel));
-                if(result.Response != AccountCreationResponse.Success) {
+                if(result.Response == AccountCreationResponse.Success) {
                     _mainWindow.Login();
                 } else {
                     displayFailedCreation = true;
