@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+    sqlserver:
+        build:
+            context: .
+            dockerfile: Dockerfile.sqlserver
+        environment:
+            SA_PASSWORD: "YourStrong!Password"
+            ACCEPT_EULA: "Y"
+        ports:
+            - "1433:1433"
+        volumes:
+            - sqldata:/var/lib/mssql/data
+        command: >
+             bash -c "/opt/mssql/bin/sqlservr & /init-db.sh && wait"
+            
+    server:
+        build:
+            context: .
+            dockerfile: EmailApplication.Server/Dockerfile
+        ports:
+            - "5139:5139"
+        environment:
+            - ASPNETCORE_URLS=http://+:5139
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=EmailApp;User Id=sa;Password=YourStrong!Password;TrustServerCertificate=True
+            - Jwt__Key=22d93d75d2deeec68806594108f3217c216aa5cd1
+            - Jwt__Issuer=EmailApp.Server
+            - Jwt__Audience=EmailApp.Client
+        depends_on:
+            - sqlserver
+                
+volumes:
+    sqldata:

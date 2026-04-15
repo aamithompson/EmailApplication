@@ -23,8 +23,8 @@ namespace EmailApplication {
         private void ConfigureServices(IServiceCollection services) {
             // HttpClient — single instance for the whole app
             services.AddSingleton<HttpClient>(new HttpClient {
-                //BaseAddress = new Uri("http://localhost:5139/api/")
-                BaseAddress = new Uri("https://localhost:7160/api/")
+                BaseAddress = new Uri("http://localhost:5139/api/")
+                //BaseAddress = new Uri("https://localhost:7160/api/")
             });
 
             // Client side services

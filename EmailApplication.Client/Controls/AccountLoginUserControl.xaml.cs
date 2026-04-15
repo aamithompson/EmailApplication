@@ -34,7 +34,7 @@ namespace EmailApplication {
 
             try {
                 LoginResponseDTO result = await _accountAPIService.Login(AccountMapper.LoginViewMailToSendAccountLoginDTO(loginViewModel));
-                if(result.Response == LoginResponse.Succesful) {
+                if(result.Response == LoginResponse.Successful) {
                     _mainWindow.ShowInbox();
                 } else {
                     displayFailedLogin = true;
