@@ -4,5 +4,6 @@ CREATE TABLE Account (
 	AccountName NVARCHAR(255) NOT NULL,
 	PasswordHash VARCHAR(255) NOT NULL,
 	DateCreated DATETIME NOT NULL,
-	DateLastLogin DATETIME NOT NULL
+	DateLastLogin DATETIME NOT NULL,
+	DateInboxLastModified DATETIME NULL
 );

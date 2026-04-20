@@ -29,6 +29,7 @@ namespace EmailApplication {
 
             // Client side services
             services.AddSingleton<Session>();
+            services.AddSingleton<InboxCache>();
 
             // API client services
             services.AddTransient<IAccountAPIService, AccountAPIService>();

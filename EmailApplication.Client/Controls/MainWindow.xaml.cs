@@ -11,11 +11,13 @@ namespace EmailApplication
         private readonly Session _session;
         private readonly IAccountAPIService _accountAPIService;
         private readonly IEmailAPIService _emailAPIService;
+        private readonly InboxCache _inboxCache;
 
-        public MainWindow(Session session, IAccountAPIService accountAPIService, IEmailAPIService emailAPIService) {
+        public MainWindow(Session session, IAccountAPIService accountAPIService, IEmailAPIService emailAPIService, InboxCache inboxCache) {
             _session = session;
             _accountAPIService = accountAPIService;
             _emailAPIService = emailAPIService;
+            _inboxCache = inboxCache;
             InitializeComponent();
             Login();
         }
@@ -29,7 +31,7 @@ namespace EmailApplication
         }
 
         public void ShowInbox() {
-            MainContent.Content = new InboxControl(this, _session, _emailAPIService);
+            MainContent.Content = new InboxControl(this, _session, _emailAPIService, _inboxCache);
         }
 
         public void ViewMail(int mailID) {

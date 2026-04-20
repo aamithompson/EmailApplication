@@ -3,9 +3,6 @@ using System.Windows.Controls;
 using EmailApplication.Client;
 using EmailApplication.Client.APIServices;
 using EmailApplication.Client.ViewModel;
-using EmailApplication.Client.Mapper;
-using EmailApplication.Shared;
-using System.Net.Http;
 
 namespace EmailApplication {
     /// <summary>
@@ -15,13 +12,15 @@ namespace EmailApplication {
         private readonly MainWindow _mainWindow;
         private readonly Session _session;
         private readonly IEmailAPIService _emailAPIService;
+        private readonly InboxCache _inboxCache;
         private InboxViewModel _inbox;
 
-        public InboxControl(MainWindow mainWindow, Session session, IEmailAPIService emailAPIService) {
+        public InboxControl(MainWindow mainWindow, Session session, IEmailAPIService emailAPIService, InboxCache inboxCache) {
             InitializeComponent();
             _mainWindow = mainWindow;
             _session = session;
             _emailAPIService = emailAPIService;
+            _inboxCache = inboxCache;
             _inbox = new InboxViewModel();
 
             this.DataContext = _inbox;
@@ -29,40 +28,21 @@ namespace EmailApplication {
         }
 
         private async void RefreshInbox() {
-            try {
-                List<InboxEmailDTO> dtos = await _emailAPIService.GetInbox();
-                if (dtos != null) {
-                    _inbox.Emails.Clear();
-                    for(int i = 0; i < dtos.Count; i++) {
-                        _inbox.Emails.Add(new InboxEmailViewModel {
-                            MailID = dtos[i].MailID,
-                            Sender = dtos[i].Sender,
-                            Subject = dtos[i].Subject,
-                            Preview = dtos[i].Preview,
-                            DateReceived = dtos[i].DateReceived,
-                            IsRead = (dtos[i].DateRead != null)
-                        });
-                    }
-                    /*List<InboxEmailViewModel> emails = new List<InboxEmailViewModel>();
-                    for (int i = 0; i < dtos.Count; i++) {
-                        emails.Add(new InboxEmailViewModel {
-                            MailID = dtos[i].MailID,
-                            Sender = dtos[i].Sender,
-                            Subject = dtos[i].Subject,
-                            Preview = dtos[i].Preview,
-                            DateReceived = dtos[i].DateReceived,
-                            IsRead = (dtos[i].DateRead != null)
-                        });
-                    }
-                    _inbox = new InboxViewModel {
-                        Emails = emails,
-                        Search = ""
-                    };*/
+            bool success = await _inboxCache.RefreshInbox();
+
+            if(success) {
+                _inbox.Emails.Clear();
+                int n = _inboxCache.InboxVMCache.Emails.Count;
+                for(int i = 0; i < n; i++) {
+                    _inbox.Emails.Add(new InboxEmailViewModel {
+                        MailID = _inboxCache.InboxVMCache.Emails[i].MailID,
+                        Sender = _inboxCache.InboxVMCache.Emails[i].Sender,
+                        Subject = _inboxCache.InboxVMCache.Emails[i].Subject,
+                        Preview = _inboxCache.InboxVMCache.Emails[i].Preview,
+                        DateReceived = _inboxCache.InboxVMCache.Emails[i].DateReceived,
+                        IsRead = _inboxCache.InboxVMCache.Emails[i].IsRead
+                    });
                 }
-            } catch (HttpRequestException) {
-
-            } catch (Exception ex) {
-
             }
         }
 
