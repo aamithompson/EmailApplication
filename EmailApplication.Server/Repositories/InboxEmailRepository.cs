@@ -2,7 +2,7 @@
 // Filename: InboxEmailRepository.cs
 // Author: Aaron Thompson
 // Date Created: 3/30/2026
-// Last Updated: 4/7/2026
+// Last Updated: 4/21/2026
 //
 // Description: Repository to access email table, however, this repository is
 // optimized for selecting specifically what is listed information in the inbox
@@ -14,7 +14,7 @@ using EmailApplication.Server.Data;
 //------------------------------------------------------------------------------
 namespace EmailApplication.Server.Repositories {
     public interface IInboxEmailRepository {
-        List<InboxEmailData> GetInboxEmailDatas(int accountID);
+        List<InboxEmailData> GetInboxEmailDatas(int accountID, int a = -1, int b = -1);
     }
 
     public class InboxEmailRepository : IInboxEmailRepository {
@@ -33,7 +33,7 @@ namespace EmailApplication.Server.Repositories {
 
 // DATABASE QUERY FUNCTION(s)
 //------------------------------------------------------------------------------
-        public List<InboxEmailData> GetInboxEmailDatas(int accountID) {
+        public List<InboxEmailData> GetInboxEmailDatas(int accountID, int a =-1, int b=-1) {
             List<InboxEmailData> emails = new List<InboxEmailData>();
 
             using (SqlConnection connection = _db.GetConnection()) {
@@ -47,9 +47,27 @@ namespace EmailApplication.Server.Repositories {
                                 WHERE etr.ReceiverID = @AccountID
                                 AND etr.Trashed = 0
                                 ORDER BY etr.DateReceived DESC";
+                if(a != -1 || b != -1) {
+                    query += "\n";
+                    if(a != -1) {
+                        query += $"OFFSET @A ROWS";
+                    } else {
+                        query += $"OFFSET 0 ROWS";
+                    }
+                    if(b != -1) {
+                        query += $" FETCH NEXT @B ROWS ONLY";
+                    }
+                    query += ";";
+                }
                 
                 using (SqlCommand command = new SqlCommand(query, connection)) {
                     command.Parameters.AddWithValue("@AccountID", accountID);
+                    if(a != -1) {
+                        command.Parameters.AddWithValue("@A", a);
+                    }
+                    if(b != -1) {
+                        command.Parameters.AddWithValue("@B", b);
+                    }
 
                     using (SqlDataReader reader = command.ExecuteReader()) {
                         int mailIDOrdinal = reader.GetOrdinal("MailID");
