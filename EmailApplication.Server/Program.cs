@@ -20,6 +20,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailRoReceiverRepository, EmailToReceiverRepository>();
 builder.Services.AddScoped<IInboxEmailRepository, InboxEmailRepository>();
+builder.Services.AddScoped<IAccountInboxStateRepository, AccountInboxStateRepository>();
 
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();

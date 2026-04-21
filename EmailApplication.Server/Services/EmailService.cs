@@ -28,17 +28,17 @@ namespace EmailApplication.Server.Services {
         private readonly IAccountRepository _accountRepository;
         private readonly IEmailRoReceiverRepository _emailRoReceiverRepository;
         private readonly IInboxEmailRepository _inboxEmailRepository;
-        private readonly IAccountInboxStatusRepository _accountInboxStatusRepository;
+        private readonly IAccountInboxStateRepository _accountInboxStateRepository;
         private readonly IConfiguration _configuration;
 
 // CONSTRUCTOR(s)
 //------------------------------------------------------------------------------
-        public EmailService(IEmailRepository emailRepository, IAccountRepository accountRepository, IEmailRoReceiverRepository emailRoReceiverRepository, IInboxEmailRepository inboxEmailRepository, IAccountInboxStatusRepository accountInboxStatusRepository, IConfiguration configuration) {
+        public EmailService(IEmailRepository emailRepository, IAccountRepository accountRepository, IEmailRoReceiverRepository emailRoReceiverRepository, IInboxEmailRepository inboxEmailRepository, IAccountInboxStateRepository accountInboxStatusRepository, IConfiguration configuration) {
             _emailRepository = emailRepository;
             _accountRepository = accountRepository;
             _emailRoReceiverRepository = emailRoReceiverRepository;
             _inboxEmailRepository = inboxEmailRepository;
-            _accountInboxStatusRepository = accountInboxStatusRepository;
+            _accountInboxStateRepository = accountInboxStatusRepository;
             _configuration = configuration;
         }
 
@@ -95,7 +95,7 @@ namespace EmailApplication.Server.Services {
         }
 
         public AccountInboxStateDTO GetInboxStatus(int accountID, int category) {
-            AccountInboxStateData accountInboxStateData = _accountInboxStatusRepository.GetAccountInboxState(accountID, category);
+            AccountInboxStateData accountInboxStateData = _accountInboxStateRepository.GetAccountInboxStateData(accountID, category);
             if(accountInboxStateData == null) {
                 return null;
             }
@@ -110,6 +110,7 @@ namespace EmailApplication.Server.Services {
         }
 
         public bool SendEmail(SendEmailDTO dto, int senderID) {
+            //Getting recipient IDs
             List<int> recipientIDs = dto.Recipients
                 .Select(address => _accountRepository.GetAccountDataByEmailAddress(address)?.AccountID)
                 .Where(id => id != null)
@@ -120,6 +121,7 @@ namespace EmailApplication.Server.Services {
                 return false;
             }
 
+            //Inserting email
             EmailData emailData = new EmailData {
                 SenderID = senderID,
                 Subject = dto.Subject,
@@ -132,6 +134,7 @@ namespace EmailApplication.Server.Services {
                 return false;
             }
 
+            //Connecting recipients to new email
             DateTime dateSent = DateTime.Now;
 
             for(int i = 0; i < recipientIDs.Count; i++) {
@@ -148,6 +151,11 @@ namespace EmailApplication.Server.Services {
                 };
 
                 _emailRoReceiverRepository.InsertEmailToReceiver(emailToReceiverData);
+            }
+
+            //Updating recipient's inbox state
+            for(int i = 0; i < recipientIDs.Count; i++) {
+                int stateID = _accountInboxStateRepository.UpdateAccountInboxStateData(recipientIDs[i], 0);
             }
 
             return true;

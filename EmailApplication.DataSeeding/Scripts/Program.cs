@@ -52,7 +52,7 @@ DateTime?[] lastModification = new DateTime?[n];
 for (int account = 1; account <= n; account++)
 {
     int senderIndex = 0;
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 150; i++)
     {
         // Pick a random sender that isn't the receiving account
         senderIndex = rng.Next(1, n+1);
@@ -90,7 +90,7 @@ for (int account = 1; account <= n; account++)
     }
 
     sb.AppendLine($"MERGE AccountInboxState AS target");
-    sb.AppendLine($"USING (VALUES ({account}, {0}, {30}, '{lastModification[account-1]:yyyy-MM-dd HH:mm:ss}'))");
+    sb.AppendLine($"USING (VALUES ({account}, {0}, {150}, '{lastModification[account-1]:yyyy-MM-dd HH:mm:ss}'))");
     sb.AppendLine($"    AS source (AccountID, Category, MailCount, DateLastModified)");
     sb.AppendLine($"ON target.AccountID = source.AccountID");
     sb.AppendLine($"    AND target.Category = source.Category");

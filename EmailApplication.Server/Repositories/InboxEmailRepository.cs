@@ -2,7 +2,7 @@
 // Filename: InboxEmailRepository.cs
 // Author: Aaron Thompson
 // Date Created: 3/30/2026
-// Last Updated: 4/20/2026
+// Last Updated: 4/21/2026
 //
 // Description: Repository to access email table, however, this repository is
 // optimized for selecting specifically what is listed information in the inbox

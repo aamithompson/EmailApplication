@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "mC5TfcpCKoI=",
+  "success": true,
+  "projectFilePath": "D:\\Users\\Pascal\\Documents\\Programming\\C#\\EmailApplication\\EmailApplication.DataSeeding\\EmailApplication.DataSeeding.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Pascal\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
+    "C:\\Users\\Pascal\\.nuget\\packages\\bogus\\35.6.5\\bogus.35.6.5.nupkg.sha512"
+  ],
+  "logs": []
+}

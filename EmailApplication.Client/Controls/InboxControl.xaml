@@ -25,12 +25,16 @@
                     </StackPanel>
                     
                     <!-- Middle -->
-                    <Border Grid.Column="1" BorderBrush="#CCCCCC" BorderThickness="1">
-                        <DockPanel>
-                            <Button DockPanel.Dock="Left" Content="=" Width="32" Margin="8, 0"/>
-                            <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" BorderThickness="0"/>
-                        </DockPanel>
-                    </Border>
+
+                    <DockPanel Grid.Column="1">
+                        <Button DockPanel.Dock="Left" Content="R" Width="24" Margin="0, 0, 8, 0" Click="RefreshButton_Click"/>
+                        <Border BorderBrush="#CCCCCC" BorderThickness="1">
+                            <DockPanel>
+                                <Button DockPanel.Dock="Left" Content="=" Width="32" Margin="4, 0"/>
+                                <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" BorderThickness="0"/>
+                            </DockPanel>
+                        </Border>
+                    </DockPanel>
 
                     <!-- Right Side -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal">
@@ -76,7 +80,7 @@
 
                 <!-- Inbox List -->
                 <Border Background="White" BorderBrush="#CCCCCC">
-                    <ListView ItemsSource="{Binding Emails}" BorderThickness="0" SelectionChanged="InboxList_SelectionChanged" x:Name="InboxList">
+                    <ListView ItemsSource="{Binding Emails}" BorderThickness="0" x:Name="InboxList" SelectionChanged="InboxList_SelectionChanged" ScrollViewer.ScrollChanged="InboxList_ScrollChanged">
                         <!-- Config -->
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
