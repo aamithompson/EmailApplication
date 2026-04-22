@@ -36,7 +36,7 @@ The client implements **MVVM**, along with **mapper** and **API service** layers
 
 - **Lazy Loading** – Loads inbox data in batches as the user scrolls, reducing initial load time and bandwidth usage.
   
-- **Client-Side Caching** – Cache previously retrieved data and invalidates it based on server-side update timestamps to minimize redundant queries.
+- **Client-Side Caching** – Caches previously retrieved data and invalidates it based on server-side update timestamps to minimize redundant queries.
 
 ## 3. Screenshots
 
