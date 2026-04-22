@@ -14,7 +14,7 @@ The client implements **MVVM**, along with **mapper** and **API service** layers
 
 ### Inbox
 
-- **Top Navigation Bar** - Serves as the core anchor throughout the application. While not yet implemented, will in the future support advanced user querying
+- **Top Navigation Bar** - Serves as the core anchor throughout the application. It will in the future support advanced user querying
 
 - **Side Bar** - A quick way for users to filter their mail as well as access other important pages such as settings, help or creating new mail.
 
@@ -30,6 +30,13 @@ The client implements **MVVM**, along with **mapper** and **API service** layers
 - **One-to-Many** - The databases have been setup to provide support for multiple recipients to receive the same mail sent by a user.
 
 - **Separate Tracking** - Each recipient has their own mail tracked with a status, if it is marked, if it is trashed, and the dates for their actions.
+
+### Query Optimizations
+- **Indexing** - Improves database performance by adding indexes on frequently queried columns. Examples of this are `idx_receiver_date` which is the composition of `(ReceiverID, DateReceived DESC)` on `EmailToReceiver`, and `UNIQUE (AccountID, Category)` on `AccountInboxState` which has an index added since it is unique.
+
+- **Lazy Loading** – Loads inbox data in batches as the user scrolls, reducing initial load time and bandwidth usage.
+  
+- **Client-Side Caching** – Cache previously retrieved data and invalidates it based on server-side update timestamps to minimize redundant queries.
 
 ## 3. Screenshots
 
@@ -201,6 +208,19 @@ As to note, `MailStatus` is represented as an `INT` but in the application casts
 | Received | 3 |
 | Read | 4 |
 
+### AccountInboxState:
+Table which keeps track of changes in a user inbox with the availabity of attaching a category such as `All` or `Sent`.
+
+| Attribute Name | Data Type | Constraint |
+|-|-|-|
+| StateID | `INT` | `PRIMARY KEY` |
+| AccountID | `INT` | `FOREIGN KEY` -> `Account(AccountID)` |
+| Category | `INT` | `NOT NULL` |
+| MailCount | `INT` | `NOT NULL` |
+| DateLastModified | `DATETIME` | `NOT NULL` |
+
+This also has the composition key `UNIQUE (AccountID, Category)`.
+
 ## 7. Security
 
 ### JWT (JSON Web Token)
@@ -216,14 +236,6 @@ Implement refresh token rotation so that short-lived access tokens can be renewe
 
 ### Asynchronous Processing
 Introduce asynchronous operations on the server side to handle multiple client requests efficiently. This would improve responsiveness and prevent blocking during database or network operations.
-
-### Indexing
-Improve database performance by adding indexes on frequently queried columns, particularly foreign keys such as `ReceiverID` and `SenderID`, to optimize inbox and sent mail retrieval.
-
-### Lazy Loading & Caching
-- **Lazy Loading** – Load inbox data in batches as the user scrolls, reducing initial load time and bandwidth usage.
-  
-- **Client-Side Caching** – Cache previously retrieved data and invalidate it based on server-side update timestamps to minimize redundant queries.
 
 ### File Attachments
 Add support for file attachments by storing files on the server and associating them with emails. The client would retrieve metadata and download files via references.
