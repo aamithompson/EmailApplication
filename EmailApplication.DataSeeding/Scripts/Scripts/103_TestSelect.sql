@@ -5,3 +5,5 @@ SELECT * FROM Account;
 SELECT * FROM Email;
 SELECT * FROM EmailToReceiver;
 SELECT * FROM AccountInboxState;
+SELECT * FROM FileAttachment;
+SELECT * FROM FileAttachmentToEmail;

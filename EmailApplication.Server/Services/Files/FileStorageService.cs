@@ -2,7 +2,7 @@
 // Filename: FileStorageService.cs
 // Author: Aaron Thompson
 // Date Created: 4/28/2026
-// Last Updated: 4/28/2026
+// Last Updated: 4/29/2026
 //
 // Description: File storage (cloud) services which handles packaging information from the
 // AWS and handles logic to prepare for JWT.
@@ -30,7 +30,7 @@ namespace EmailApplication.Server.Services.Files {
             _config = config.Value;
         }
 
-        public string GetAttachmentURL(string key) {
+        public string GetFileAttachmentURL(string key) {
             var request = new GetPreSignedUrlRequest {
                 BucketName = _config.Bucket,
                 Key = key,
@@ -40,7 +40,7 @@ namespace EmailApplication.Server.Services.Files {
             return _s3Client.GetPreSignedURL(request);
         }
 
-        public async Task<string> UploadAttachment(Stream fileStream, string fileName, string fileID, string contentType) {
+        public async Task<string> UploadFileAttachment(Stream fileStream, string fileName, string fileID, string contentType) {
             var key = $"attachments/{fileID}/{fileName}";
             var uploadRequest = new TransferUtilityUploadRequest {
                 BucketName = _config.Bucket,

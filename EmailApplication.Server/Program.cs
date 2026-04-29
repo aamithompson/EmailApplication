@@ -1,9 +1,12 @@
+using EmailApplication.Server.Config;
 using EmailApplication.Server.Data;
 using EmailApplication.Server.Repositories;
 using EmailApplication.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+//using Amazon.Extensions.NETCore.Setup;
+using Amazon.S3;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +28,11 @@ builder.Services.AddScoped<IAccountInboxStateRepository, AccountInboxStateReposi
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+// AWS
+builder.Services.Configure<AWSConfig>(builder.Configuration.GetSection("AWS"));
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 // Swagger
 builder.Services.AddSwaggerGen(options => {

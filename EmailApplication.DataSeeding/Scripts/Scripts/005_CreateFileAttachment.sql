@@ -1,0 +1,12 @@
+USE EmailApplicationDB;
+GO
+
+CREATE TABLE FileAttachment (
+	FileID INT PRIMARY KEY IDENTITY(1,1),
+	BucketKey NVARCHAR(255) NOT NULL,
+	UploaderID INT NOT NULL FOREIGN KEY REFERENCES Account(AccountID),
+	FileName NVARCHAR(255) NOT NULL,	
+	FileSize BIGINT NOT NULL,
+	DateUploaded DATETIME NOT NULL,
+	ReferenceCount INT NOT NULL,
+);

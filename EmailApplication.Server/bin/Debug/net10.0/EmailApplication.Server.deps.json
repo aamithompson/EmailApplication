@@ -8,6 +8,9 @@
     ".NETCoreApp,Version=v10.0": {
       "EmailApplication.Server/1.0.0": {
         "dependencies": {
+          "AWSSDK.Extensions.NETCore.Setup": "4.0.3.35",
+          "AWSSDK.S3": "4.0.21.2",
+          "AWSSDK.SecurityToken": "4.0.6",
           "BCrypt.Net-Next": "4.1.0",
           "EmailApplication.Shared": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.5",
@@ -19,6 +22,47 @@
         },
         "runtime": {
           "EmailApplication.Server.dll": {}
+        }
+      },
+      "AWSSDK.Core/4.0.4": {
+        "runtime": {
+          "lib/net8.0/AWSSDK.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.4.0"
+          }
+        }
+      },
+      "AWSSDK.Extensions.NETCore.Setup/4.0.3.35": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.4"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.Extensions.NETCore.Setup.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.3.35"
+          }
+        }
+      },
+      "AWSSDK.S3/4.0.21.2": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.4"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.S3.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.21.2"
+          }
+        }
+      },
+      "AWSSDK.SecurityToken/4.0.6": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.4"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.SecurityToken.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.6.0"
+          }
         }
       },
       "BCrypt.Net-Next/4.1.0": {
@@ -326,6 +370,34 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "AWSSDK.Core/4.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RjBk1WDrOCpsSRGn6j2lYhgiyYnXEhMctwJevNnIPIIGpgj49ifbU6FmG1Dk+1M/VSuqeTQ1WVsssziTty7b2w==",
+      "path": "awssdk.core/4.0.4",
+      "hashPath": "awssdk.core.4.0.4.nupkg.sha512"
+    },
+    "AWSSDK.Extensions.NETCore.Setup/4.0.3.35": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lc/tLITITqhKChnURnw9H5pgDAagXTz1oyaK7iwQEAoFf01D8cKnBPGcsYBH4lk1FthGnAfstPAsjMqun6+bYg==",
+      "path": "awssdk.extensions.netcore.setup/4.0.3.35",
+      "hashPath": "awssdk.extensions.netcore.setup.4.0.3.35.nupkg.sha512"
+    },
+    "AWSSDK.S3/4.0.21.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3Yeh5DjpfnmKKW8z1684LxUWBVau1ozmLY9vpLhwv9uqCa2S3wk6xK7KCBSlM2i6RQ14Wabyqfqo1Y27etE00Q==",
+      "path": "awssdk.s3/4.0.21.2",
+      "hashPath": "awssdk.s3.4.0.21.2.nupkg.sha512"
+    },
+    "AWSSDK.SecurityToken/4.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4VpCKVUbnHt7KyUM1rEC8dZ2gdvUhDET+qmNbFuPTSEhorL+CzuAwVJk+SCx32hlCxl/vF+RNYzo1dwe8Urdiw==",
+      "path": "awssdk.securitytoken/4.0.6",
+      "hashPath": "awssdk.securitytoken.4.0.6.nupkg.sha512"
     },
     "BCrypt.Net-Next/4.1.0": {
       "type": "package",
