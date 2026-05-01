@@ -2,7 +2,7 @@
 // Filename: EmailService.cs
 // Author: Aaron Thompson
 // Date Created: 3/30/2026
-// Last Updated: 4/20/2026
+// Last Updated: 5/1/2026
 //
 // Description: Email services which handles packaging information from the
 // repositories and handles logic.
@@ -17,7 +17,7 @@ namespace EmailApplication.Server.Services {
         EmailDTO GetEmail(int mailID, int requesterID);
         List<InboxEmailDTO> GetInbox(GetInboxDTO dto, int accountID, int a = -1, int b = -1);
         AccountInboxStateDTO GetInboxStatus(int accountID, int category);
-        bool SendEmail(SendEmailDTO dto, int senderID);
+        int SendEmail(SendEmailDTO dto, int senderID);
     }
 
     public class EmailService : IEmailService {
@@ -109,7 +109,7 @@ namespace EmailApplication.Server.Services {
             };
         }
 
-        public bool SendEmail(SendEmailDTO dto, int senderID) {
+        public int SendEmail(SendEmailDTO dto, int senderID) {
             //Getting recipient IDs
             List<int> recipientIDs = dto.Recipients
                 .Select(address => _accountRepository.GetAccountDataByEmailAddress(address)?.AccountID)
@@ -118,7 +118,7 @@ namespace EmailApplication.Server.Services {
                 .ToList();
 
             if(recipientIDs.Count == 0) {
-                return false;
+                return 0;
             }
 
             //Inserting email
@@ -131,7 +131,7 @@ namespace EmailApplication.Server.Services {
 
             int mailID = _emailRepository.InsertEmail(emailData);
             if(mailID == 0) {
-                return false;
+                return mailID;
             }
 
             //Connecting recipients to new email
@@ -158,7 +158,7 @@ namespace EmailApplication.Server.Services {
                 int stateID = _accountInboxStateRepository.UpdateAccountInboxStateData(recipientIDs[i], 0);
             }
 
-            return true;
+            return mailID;
         }
     }
 } //END NAMESPACE EmailApplication.Server.Services

@@ -2,7 +2,7 @@
 // Filename: FileStorageService.cs
 // Author: Aaron Thompson
 // Date Created: 4/28/2026
-// Last Updated: 4/30/2026
+// Last Updated: 5/1/2026
 //
 // Description: File storage (cloud) services which handles packaging information from the
 // AWS and handles logic to prepare for JWT.
@@ -51,7 +51,7 @@ namespace EmailApplication.Server.Services.Files {
                 Key = key,
                 InputStream = fileStream,
                 ContentType = contentType,
-                ServerSideEncryptionCustomerMethod = ServerSideEncryptionCustomerMethod.AES256,
+                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
                 Metadata = {
                     ["original-filename"] = fileName,
                     ["file-id"] = fileID.ToString(),

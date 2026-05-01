@@ -7,6 +7,7 @@
 // Description: Handles processing incoming http requests relating to files.
 //==============================================================================
 using EmailApplication.Enums;
+using EmailApplication.Server.Config;
 using EmailApplication.Server.Services.Files;
 using EmailApplication.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +34,7 @@ namespace EmailApplication.Server.Controllers {
         [Authorize]
         [HttpGet("get/file/{fileID}")]
         public IActionResult GetFileAttachmentURL(int fileID) {
-            var result = _fileStorage.GetFileAttachmentURL(fileID);
+            var result = _fileService.GetFileAttachmentURL(fileID);
             return Ok(result);
         }
 
@@ -47,9 +48,7 @@ namespace EmailApplication.Server.Controllers {
             int accountID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             var result = await _fileService.UploadFileAttachment(
-                file.OpenReadStream(),
-                file.FileName,
-                file.ContentType,
+                file,
                 accountID
             );
 

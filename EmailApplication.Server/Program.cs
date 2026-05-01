@@ -8,6 +8,7 @@ using Microsoft.OpenApi;
 //using Amazon.Extensions.NETCore.Setup;
 using Amazon.S3;
 using System.Text;
+using EmailApplication.Server.Services.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,9 @@ builder.Services.AddScoped<IAccountInboxStateRepository, AccountInboxStateReposi
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IFileRecordService, FileRecordService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 // AWS
 builder.Services.Configure<AWSConfig>(builder.Configuration.GetSection("AWS"));

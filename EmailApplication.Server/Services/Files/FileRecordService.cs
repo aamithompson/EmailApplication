@@ -2,7 +2,7 @@
 // Filename: FileRecordService.cs
 // Author: Aaron Thompson
 // Date Created: 4/28/2026
-// Last Updated: 4/30/2026
+// Last Updated: 5/1/2026
 //
 // Description: File record (database) services which handles packaging information from the
 // repository and handles logic to prepare for JWT.
@@ -15,6 +15,7 @@ namespace EmailApplication.Server.Services.Files {
         public (int FileID, string BucketKey) InsertFileAttachmentRecord(IFormFile file, int uploaderID);
         public void RemoveFileAttachmentRecord(int fileID);
         public void InsertFileAttachmentToEmail(int fileID, int mailID);
+        public int GetUploaderID(int fileID);
         public string GetBucketKey(int fileID);
         public List<string> GetBucketKeysForEmail(int mailID);
     }
@@ -59,6 +60,15 @@ namespace EmailApplication.Server.Services.Files {
             };
 
             _fileAttachmentToEmailRepository.InsertFileAttachmentToEmail(data);
+        }
+
+        public int GetUploaderID(int fileID) {
+            FileAttachmentData data = _fileRepository.GetFileAttachment(fileID);
+            if(data == null) {
+                return 0;
+            }
+
+            return data.UploaderID;
         }
 
         public string GetBucketKey(int fileID) {
