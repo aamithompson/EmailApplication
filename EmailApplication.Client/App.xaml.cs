@@ -34,6 +34,7 @@ namespace EmailApplication {
             // API client services
             services.AddTransient<IAccountAPIService, AccountAPIService>();
             services.AddTransient<IEmailAPIService, EmailAPIService>();
+            services.AddTransient<IFileAPIService, FileAPIService>();
 
             // ViewModels
             services.AddTransient<AccountCreationViewModel>();

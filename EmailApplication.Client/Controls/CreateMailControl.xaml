@@ -150,7 +150,45 @@
 
                     <!-- Files Attached -->
                     <Border Grid.Row="4" BorderBrush="#CCCCCC" BorderThickness="1">
-                        <TextBlock Text="File(s) Attached:"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="File(s) Attached:"/>
+
+                            <WrapPanel Grid.Column="1" Orientation="Horizontal">
+                                <!-- Attachment List -->
+                                <ItemsControl ItemsSource="{Binding FileAttachments}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel Orientation="Horizontal" Margin="2,0">
+                                                <!-- File Button -->
+                                                <Button Content="{Binding FileName}" Width="160" HorizontalContentAlignment="Left" Click="DownloadAttachment_Click" CommandParameter="{Binding}" IsEnabled="{Binding IsUploaded}">
+                                                    <Button.ContentTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis"/>
+                                                        </DataTemplate>
+                                                    </Button.ContentTemplate>
+                                                </Button>
+
+                                                <!-- Delete Button -->
+                                                <Button Content="✕" Foreground="Red" BorderThickness="0" Click="RemoveAttachment_Click" CommandParameter="{Binding}"/>
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Attach More Button -->
+                                <Button Grid.Column="2" Content="+" Click="FileAttach_Click" Width="16" VerticalAlignment="Top" Margin="8, 0"/>
+                            </WrapPanel>
+                        </Grid>
                     </Border>
                 </Grid>
             </Border>

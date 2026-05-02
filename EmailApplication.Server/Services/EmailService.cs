@@ -2,7 +2,7 @@
 // Filename: EmailService.cs
 // Author: Aaron Thompson
 // Date Created: 3/30/2026
-// Last Updated: 4/20/2026
+// Last Updated: 5/2/2026
 //
 // Description: Email services which handles packaging information from the
 // repositories and handles logic.
@@ -17,7 +17,7 @@ namespace EmailApplication.Server.Services {
         EmailDTO GetEmail(int mailID, int requesterID);
         List<InboxEmailDTO> GetInbox(GetInboxDTO dto, int accountID, int a = -1, int b = -1);
         AccountInboxStateDTO GetInboxStatus(int accountID, int category);
-        bool SendEmail(SendEmailDTO dto, int senderID);
+        int SendEmail(SendEmailDTO dto, int senderID);
     }
 
     public class EmailService : IEmailService {
@@ -29,16 +29,20 @@ namespace EmailApplication.Server.Services {
         private readonly IEmailRoReceiverRepository _emailRoReceiverRepository;
         private readonly IInboxEmailRepository _inboxEmailRepository;
         private readonly IAccountInboxStateRepository _accountInboxStateRepository;
+        private readonly IFileAttachmentToEmailRepository _fileAttachmentToEmailRepository;
+        private readonly IFileAttachmentRepository _fileAttachmentRepository;
         private readonly IConfiguration _configuration;
 
 // CONSTRUCTOR(s)
 //------------------------------------------------------------------------------
-        public EmailService(IEmailRepository emailRepository, IAccountRepository accountRepository, IEmailRoReceiverRepository emailRoReceiverRepository, IInboxEmailRepository inboxEmailRepository, IAccountInboxStateRepository accountInboxStatusRepository, IConfiguration configuration) {
+        public EmailService(IEmailRepository emailRepository, IAccountRepository accountRepository, IEmailRoReceiverRepository emailRoReceiverRepository, IInboxEmailRepository inboxEmailRepository, IAccountInboxStateRepository accountInboxStatusRepository, IFileAttachmentRepository fileAttachmentRepository, IFileAttachmentToEmailRepository fileAttachmentToEmailRepository, IConfiguration configuration) {
             _emailRepository = emailRepository;
             _accountRepository = accountRepository;
             _emailRoReceiverRepository = emailRoReceiverRepository;
             _inboxEmailRepository = inboxEmailRepository;
             _accountInboxStateRepository = accountInboxStatusRepository;
+            _fileAttachmentRepository = fileAttachmentRepository;
+            _fileAttachmentToEmailRepository = fileAttachmentToEmailRepository;
             _configuration = configuration;
         }
 
@@ -54,6 +58,10 @@ namespace EmailApplication.Server.Services {
             List<EmailToReceiverData> receiverDatas = _emailRoReceiverRepository.GetReceiversByMailID(mailID);
             List<string> recipients = receiverDatas.Select(r => _accountRepository.GetAccountDataByID(r.ReceiverID).EmailAddress).ToList();
             EmailToReceiverData requesterData = receiverDatas.Single(r => r.ReceiverID == requesterID);
+
+            List<FileAttachmentToEmailData> fileAttachmentToEmailDatas = _fileAttachmentToEmailRepository.GetFileAttachmentsToEmail(mailID);
+            List<int> fileIDs = fileAttachmentToEmailDatas.Select(d => d.FileID).ToList();
+            List<string> fileNames = fileIDs.Select(id => _fileAttachmentRepository.GetFileAttachment(id).FileName).ToList();
 
             return new EmailDTO {
                 MailID = emailData.MailID,
@@ -72,6 +80,9 @@ namespace EmailApplication.Server.Services {
                 DateRead = requesterData.DateRead,
 
                 Recipients = recipients,
+
+                FileIDs = fileIDs,
+                FileNames = fileNames
             };
         }
 
@@ -109,7 +120,7 @@ namespace EmailApplication.Server.Services {
             };
         }
 
-        public bool SendEmail(SendEmailDTO dto, int senderID) {
+        public int SendEmail(SendEmailDTO dto, int senderID) {
             //Getting recipient IDs
             List<int> recipientIDs = dto.Recipients
                 .Select(address => _accountRepository.GetAccountDataByEmailAddress(address)?.AccountID)
@@ -118,7 +129,7 @@ namespace EmailApplication.Server.Services {
                 .ToList();
 
             if(recipientIDs.Count == 0) {
-                return false;
+                return 0;
             }
 
             //Inserting email
@@ -131,7 +142,7 @@ namespace EmailApplication.Server.Services {
 
             int mailID = _emailRepository.InsertEmail(emailData);
             if(mailID == 0) {
-                return false;
+                return mailID;
             }
 
             //Connecting recipients to new email
@@ -158,7 +169,7 @@ namespace EmailApplication.Server.Services {
                 int stateID = _accountInboxStateRepository.UpdateAccountInboxStateData(recipientIDs[i], 0);
             }
 
-            return true;
+            return mailID;
         }
     }
 } //END NAMESPACE EmailApplication.Server.Services

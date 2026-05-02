@@ -34,6 +34,10 @@ namespace EmailApplication.Shared {
 
         //From EmailToReceiverData and AccountData (recipients)
         public List<string> Recipients { get; set; }
+
+        //From FileAttachmentsData and FileAttachmentsToEmailData
+        public List<int> FileIDs {  get; set; }
+        public List<string> FileNames { get; set; }
     }
 } //END NAMESPACE EmailApplication.Shared
 //==============================================================================

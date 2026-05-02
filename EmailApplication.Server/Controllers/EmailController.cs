@@ -2,12 +2,13 @@
 // Filename: EmailController.cs
 // Author: Aaron Thompson
 // Date Created: 3/31/2026
-// Last Updated: 4/20/2026
+// Last Updated: 5/1/2026
 //
 // Description: Handles processing incoming http requests relating to emails
 // and returns a response.
 //==============================================================================
 using EmailApplication.Server.Services;
+using EmailApplication.Server.Services.Files;
 using EmailApplication.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,13 @@ namespace EmailApplication.Server.Controllers {
 // VARIABLE(s)
 //------------------------------------------------------------------------------
         private readonly IEmailService _emailService;
+        private readonly IFileService _fileService;
 
 // CONSTRUCTOR(s)
 //------------------------------------------------------------------------------
-        public EmailController(IEmailService emailService) {
+        public EmailController(IEmailService emailService, IFileService fileService) {
             _emailService = emailService;
+            _fileService = fileService;
         }
 
 // HTTP FUNCTION(s)
@@ -66,7 +69,10 @@ namespace EmailApplication.Server.Controllers {
         [HttpPost("send/email")]
         public IActionResult SendEmail([FromBody] SendEmailDTO dto) {
             int senderID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var result = _emailService.SendEmail(dto, senderID);
+
+            int mailID = _emailService.SendEmail(dto, senderID);
+            var result = (mailID > 0) && (_fileService.AttachFileAttachmentToEmail(dto, mailID, senderID));
+
             return Ok(result);
         }
     }

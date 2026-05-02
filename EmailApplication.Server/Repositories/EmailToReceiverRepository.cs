@@ -2,7 +2,7 @@
 // Filename: EmailToReceiverRepository.cs
 // Author: Aaron Thompson
 // Date Created: 3/30/2026
-// Last Updated: 4/7/2026
+// Last Updated: 4/30/2026
 //
 // Description: Repository to access email to receiver table.
 //==============================================================================
@@ -126,8 +126,7 @@ namespace EmailApplication.Server.Repositories {
 
                 string query = @"
                     INSERT INTO EmailToReceiver (MailID, ReceiverID, MailStatus, Marked, Trashed, DateTrashed, DateSent, DateReceived, DateRead)
-                    VALUES (@MailID, @ReceiverID, @MailStatus, @Marked, @Trashed, @DateTrashed, @DateSent, @DateReceived, @DateRead);
-                    SELECT SCOPE_IDENTITY();";
+                    VALUES (@MailID, @ReceiverID, @MailStatus, @Marked, @Trashed, @DateTrashed, @DateSent, @DateReceived, @DateRead);";
 
                 using (SqlCommand command = new SqlCommand(query, connection)) {
                     command.Parameters.AddWithValue("@MailID", emailToReceiverData.MailID);

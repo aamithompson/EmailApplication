@@ -2,10 +2,12 @@
 // Filename: EmailViewModel.cs
 // Author: Aaron Thompson
 // Date Created: 3/10/2026
-// Last Updated: 4/9/2026
+// Last Updated: 5/2/2026
 //
 // Description: View Model for a full email.
 //==============================================================================
+using System.Collections.ObjectModel;
+
 namespace EmailApplication.Client.ViewModel {
     public class EmailViewModel : ViewModelBase {
 
@@ -18,6 +20,8 @@ namespace EmailApplication.Client.ViewModel {
         private DateTime _dateCreated { get; set; }
         private DateTime? _dateReceived { get; set; }
         private DateTime? _dateRead { get; set; }
+
+        public ObservableCollection<FileAttachmentURLViewModel> FileAttachmentURLs { get; set; } = new ObservableCollection<FileAttachmentURLViewModel>();
 
         public string Subject { get => _subject;
             set {

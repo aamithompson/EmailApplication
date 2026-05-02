@@ -122,7 +122,37 @@
 
                     <!-- Files Attached -->
                     <Border Grid.Row="4" BorderBrush="#CCCCCC" BorderThickness="1">
-                        <TextBlock Text="File(s) Attached:"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="File(s) Attached:"/>
+                            
+                            <!-- Attachment List -->
+                            <ItemsControl Grid.Column="1" ItemsSource="{Binding FileAttachmentURLs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel Orientation="Horizontal" Margin="2,0">
+                                            <!-- File Button -->
+                                            <Button Content="{Binding FileName}" Width="160" HorizontalContentAlignment="Left" Click="DownloadAttachment_Click" CommandParameter="{Binding}">
+                                                <Button.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis"/>
+                                                    </DataTemplate>
+                                                </Button.ContentTemplate>
+                                            </Button>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
                     </Border>
                 </Grid>
             </Border>

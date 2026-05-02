@@ -1,0 +1,7 @@
+USE EmailApplicationDB;
+GO
+
+CREATE TABLE FileAttachmentToEmail(
+	FileID INT NOT NULL FOREIGN KEY REFERENCES FileAttachment(FileID),
+	MailID INT NOT NULL FOREIGN KEY REFERENCES Email(MailID)
+);

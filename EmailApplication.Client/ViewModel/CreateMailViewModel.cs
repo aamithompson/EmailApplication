@@ -6,6 +6,8 @@
 //
 // Description: View Model for submitting an email.
 //==============================================================================
+using System.Collections.ObjectModel;
+
 namespace EmailApplication.Client.ViewModel {
     public class CreateMailViewModel : ViewModelBase {
 
@@ -14,6 +16,9 @@ namespace EmailApplication.Client.ViewModel {
         private string _subject;
         private string _recipients;
         private string _body;
+
+        public ObservableCollection<FileAttachmentViewModel> FileAttachments { get; set; } = new ObservableCollection<FileAttachmentViewModel>();
+
         public string Subject {
             get => _subject;
             set {

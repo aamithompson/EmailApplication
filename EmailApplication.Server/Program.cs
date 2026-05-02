@@ -1,10 +1,14 @@
+using EmailApplication.Server.Config;
 using EmailApplication.Server.Data;
 using EmailApplication.Server.Repositories;
 using EmailApplication.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+//using Amazon.Extensions.NETCore.Setup;
+using Amazon.S3;
 using System.Text;
+using EmailApplication.Server.Services.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +17,11 @@ builder.Services.AddControllers();
 
 // Database
 builder.Services.AddScoped<DatabaseConnection>();
-Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+// AWS
+builder.Services.Configure<AWSConfig>(builder.Configuration.GetSection("AWS"));
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 // Repositories
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -21,10 +29,15 @@ builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailRoReceiverRepository, EmailToReceiverRepository>();
 builder.Services.AddScoped<IInboxEmailRepository, InboxEmailRepository>();
 builder.Services.AddScoped<IAccountInboxStateRepository, AccountInboxStateRepository>();
+builder.Services.AddScoped<IFileAttachmentRepository, FileAttachmentRepository>();
+builder.Services.AddScoped<IFileAttachmentToEmailRepository, FileAttachmentToEmailRepository>();
 
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IFileRecordService, FileRecordService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 // Swagger
 builder.Services.AddSwaggerGen(options => {
