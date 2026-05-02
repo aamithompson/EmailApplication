@@ -28,6 +28,11 @@ services:
             - Jwt__Key=22d93d75d2deeec68806594108f3217c216aa5cd1
             - Jwt__Issuer=EmailApp.Server
             - Jwt__Audience=EmailApp.Client
+            - AWS__Bucket=emailapplication-fileattachment-test-useast2
+            - AWS__Region=us-east-2
+            - AWS__PresignedUrlExpiryMinutes=5
+            - AWS_ACCESS_KEY_ID=your_access_key
+            - AWS_SECRET_ACCESS_KEY=your_secret_key
         depends_on:
             - sqlserver
                 

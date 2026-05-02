@@ -26,3 +26,31 @@ CREATE TABLE EmailToReceiver (
 	DateReceived DATETIME,
 	DateRead DATETIME
 );
+
+CREATE TABLE AccountInboxState (
+	StateID INT PRIMARY KEY IDENTITY(1,1),
+	AccountID INT NOT NULL FOREIGN KEY REFERENCES Account(AccountID),
+	Category INT NOT NULL,
+	MailCount INT NOT NULL,
+	DateLastModified DATETIME NOT NULL,
+	UNIQUE (AccountID, Category)
+);
+
+CREATE INDEX idx_receiver_date
+ON EmailToReceiver (ReceiverID, DateReceived DESC);
+
+CREATE TABLE FileAttachment (
+	FileID INT PRIMARY KEY IDENTITY(1,1),
+	BucketKey NVARCHAR(255) NOT NULL,
+	UploaderID INT NOT NULL FOREIGN KEY REFERENCES Account(AccountID),
+	FileName NVARCHAR(255) NOT NULL,	
+	FileSize BIGINT NOT NULL,
+	DateUploaded DATETIME NOT NULL,
+	DateLastReferenced DATETIME NOT NULL,
+	ReferenceCount INT NOT NULL
+);
+
+CREATE TABLE FileAttachmentToEmail(
+	FileID INT NOT NULL FOREIGN KEY REFERENCES FileAttachment(FileID),
+	MailID INT NOT NULL FOREIGN KEY REFERENCES Email(MailID)
+);

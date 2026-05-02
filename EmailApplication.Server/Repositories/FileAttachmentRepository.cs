@@ -79,13 +79,14 @@ namespace EmailApplication.Server.Repositories {
                 //is dependent on the fileID since buckey key = attachments/fileID/fileName
                 //and the fileID is produced on insertion.
                 string query = @"
-                    INSERT INTO FileAttachment (UploaderID, FileName, FileSize, DateUploaded, DateLastReferenced, ReferenceCount)
-                    VALUES (@UploaderID, @FileName, @FileSize, @DateUploaded, @DateLastReferenced, @ReferenceCount);
+                    INSERT INTO FileAttachment (UploaderID, BucketKey, FileName, FileSize, DateUploaded, DateLastReferenced, ReferenceCount)
+                    VALUES (@UploaderID, @BucketKey, @FileName, @FileSize, @DateUploaded, @DateLastReferenced, @ReferenceCount);
                     SELECT SCOPE_IDENTITY();";
 
                 int fileID;
                 using (SqlCommand command = new SqlCommand(query, connection)) {
                     command.Parameters.AddWithValue("@UploaderID", fileAttachmentData.UploaderID);
+                    command.Parameters.AddWithValue("@BucketKey", "");
                     command.Parameters.AddWithValue("@FileName", fileAttachmentData.FileName);
                     command.Parameters.AddWithValue("@FileSize", fileAttachmentData.FileSize);
                     command.Parameters.AddWithValue("@DateUploaded", fileAttachmentData.DateUploaded);

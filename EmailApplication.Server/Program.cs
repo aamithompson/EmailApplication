@@ -17,7 +17,11 @@ builder.Services.AddControllers();
 
 // Database
 builder.Services.AddScoped<DatabaseConnection>();
-Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+// AWS
+builder.Services.Configure<AWSConfig>(builder.Configuration.GetSection("AWS"));
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 // Repositories
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -25,6 +29,8 @@ builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailRoReceiverRepository, EmailToReceiverRepository>();
 builder.Services.AddScoped<IInboxEmailRepository, InboxEmailRepository>();
 builder.Services.AddScoped<IAccountInboxStateRepository, AccountInboxStateRepository>();
+builder.Services.AddScoped<IFileAttachmentRepository, FileAttachmentRepository>();
+builder.Services.AddScoped<IFileAttachmentToEmailRepository, FileAttachmentToEmailRepository>();
 
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -32,11 +38,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IFileRecordService, FileRecordService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IFileService, FileService>();
-
-// AWS
-builder.Services.Configure<AWSConfig>(builder.Configuration.GetSection("AWS"));
-builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-builder.Services.AddAWSService<IAmazonS3>();
 
 // Swagger
 builder.Services.AddSwaggerGen(options => {

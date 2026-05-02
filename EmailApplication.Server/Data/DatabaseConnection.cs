@@ -19,8 +19,8 @@ namespace EmailApplication.Server.Data {
 // CONSTRUCTOR(s)
 //------------------------------------------------------------------------------
         public DatabaseConnection(IConfiguration configuration) {
-            //_connectionString = configuration.GetConnectionString("DefaultConnection");
-            _connectionString = configuration.GetConnectionString("EmailApplicationDB");
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            //_connectionString = configuration.GetConnectionString("EmailApplicationDB");
         }
 
 // FUNCTION(s)
