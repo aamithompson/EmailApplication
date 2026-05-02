@@ -1,6 +1,6 @@
 # Desktop Email Application (WPF, C#, T-SQL)
 ## 1. Overview
-A desktop email application built with **WPF (C#)** and **SQL Server**, designed using a **layered client-server architecture** to separate presentation, business logic, and data access across two distinct tiers.
+A desktop email application built with **WPF (C#)**, **SQL Server** and **AWS**, designed using a **layered client-server architecture** to separate presentation, business logic, and data access across two distinct tiers.
 
 The client implements **MVVM**, along with **mapper** and **API service** layers, to support authentication, email composition, and inbox management. The server exposes HTTP endpoints consumed by the client, backed by **service** and **repository** layers and a **normalized relational database schema** designed to efficiently handle multi-recipient email delivery.
 
@@ -24,6 +24,13 @@ The client implements **MVVM**, along with **mapper** and **API service** layers
 - **Sending Mail** - Contained in its own page, mail can be created by users and sent to other users. This includes subject and body as well.
 
 - **Receiving Mail** - Similarly with its own page, users can view the mail entirely they have been sent after clicking on the respective preview mail in their inbox.
+
+### File Attachments
+- **Uploading** - Files are uploaded immediately upon selection before the email is sent, displaying in a wrap panel with truncated filenames. Each file is stored in AWS S3 and tracked in the database with a reference counter.
+
+- **Downloading** - Recipients can download individual attachments via presigned S3 URLs generated on demand by the server, allowing direct client-to-S3 transfers without proxying through the server.
+
+- **Security** - Ownership is verified on both upload and download. Files are tied to the uploading account to prevent fileID injection attacks during the window between upload and send.
 
 ### Multi-Recipient Support
 
@@ -73,12 +80,17 @@ The client implements **MVVM**, along with **mapper** and **API service** layers
 ### Setup
 1. Clone the repository
 
-2. Run the following from the solution root:
+2. Copy `.env.example` to `.env` and fill in your credentials:
 ```bash
-    docker-compose up --build
+cp .env.example .env
 ```
 
-3. Wait for both containers to show as running. You can verify the server is up at:
+3. Run the following from the solution root:
+```bash
+docker-compose up --build
+```
+
+4. Wait for both containers to show as running. You can verify the server is up at:
 - http://localhost:5139/swagger
 
 ### Running the Client
@@ -100,6 +112,31 @@ docker-compose down
 ```
 
 ## 5. Architecture
+*WPF Client*
+
+ ├── *Views*
+ 
+ ├── *ViewModels*
+ 
+ ├── *API Services*
+ 
+ ↓
+ 
+*ASP.NET API*
+
+ ├── *Controllers*
+ 
+ ├── *Services*
+ 
+ ├── *Repositories*
+ 
+ ↓
+ 
+*SQL Server*
+
+
+*S3 Bucket*
+
 The application is split into a client and a server that communicate over HTTP. The client sends requests with a JWT for authentication; the server validates the token before processing.
 
 ### Client
@@ -148,13 +185,16 @@ The application is split into a client and a server that communicate over HTTP. 
 
 - The service layer serves as a mediator between the layers of data such as taking requests then calling for the repository to fetch data it needs and then organizes that data. Another example is taking user input, organizing it into a data representation then sending it to the repository to insert into the database.
 
-- The current services are `EmailService` and `AccountService`.
+- The current services are `EmailService`, `AccountService`,  `FileService`, `FileRecordService`, and `FileStorageService`.
 
 ### Repositories
 
 - The repository serves as the mediator between the data model and the actual records in the database.
 
 - The current repositories are the `AccountRepository`, `EmailRepository`, `EmailToReceiverRepository`, and `InboxEmailRepository`.
+
+### Cloud (AWS S3)
+File attachments are stored in an Amazon S3 bucket. The server generates presigned URLs on demand, granting temporary direct access to specific files. Credentials are never exposed to the client.
 
 ## 6. Database Design
 The database is designed using a normalized relational schema to minimize redundancy and support efficient querying. In addition, the database supports one account sending many emails and one email being received by many accounts.
@@ -221,6 +261,29 @@ Table which keeps track of changes in a user inbox with the availabity of attach
 
 This also has the composition key `UNIQUE (AccountID, Category)`.
 
+### FileAttachment:
+Stores metadata for uploaded file attachments.
+
+| Attribute Name | Data Type | Constraint |
+|-|-|-|
+| FileID | `INT` | `PRIMARY KEY` |
+| BucketKey | `NVARCHAR(255)` | S3 object key, format: `attachments/{FileID}/{FileName}` |
+| UploaderID | `INT` | `FOREIGN KEY` -> `Account(AccountID)` |
+| FileName | `NVARCHAR(255)` | `NOT NULL` |
+| FileSize | `BIGINT` | `NOT NULL` |
+| DateUploaded | `DATETIME` | `NOT NULL` |
+| DateLastReferenced | `DATETIME` | `NOT NULL` |
+| ReferenceCount | `INT` | `NOT NULL` |
+
+### FileAttachmentToEmail:
+Junction table mapping file attachments to emails, enabling file reuse across forwards 
+and replies without duplication in S3.
+
+| Attribute Name | Data Type | Constraint |
+|-|-|-|
+| FileID | `INT` | `FOREIGN KEY` -> `FileAttachment(FileID)` |
+| MailID | `INT` | `FOREIGN KEY` -> `Email(MailID)` |
+
 ## 7. Security
 
 ### JWT (JSON Web Token)
@@ -228,6 +291,9 @@ After the server validates user credentials at login, it issues a signed JWT. Th
 
 ### BCrypt
 User passwords are hashed using BCrypt before storage, ensuring no plaintext credentials are stored.
+
+### File Attachment Security
+Uploaded files are tied to the uploading account via `UploaderID`. On send, every fileID in the request is verified to belong to the sender, preventing users from injecting foreign fileIDs to attach files they do not own. Presigned URLs are generated at download time rather than ahead of time, minimizing the window of URL validity to seconds.
 
 ## 8. Future Work / Optimization Considerations
 
@@ -237,8 +303,14 @@ Implement refresh token rotation so that short-lived access tokens can be renewe
 ### Asynchronous Processing
 Introduce asynchronous operations on the server side to handle multiple client requests efficiently. This would improve responsiveness and prevent blocking during database or network operations.
 
-### File Attachments
-Add support for file attachments by storing files on the server and associating them with emails. The client would retrieve metadata and download files via references.
+### File Attachment Cleanup Service
+A background hosted service to periodically remove orphaned S3 files where `ReferenceCount = 0` beyond a grace period, handling cases where uploads were initiated but the email was never sent.
+
+### Recipient Download Verification
+Currently download access checks uploader ownership. Full implementation would additionally verify the requester is a recipient of the email the file is attached to, using a join across `FileAttachmentToEmail` and `EmailToReceiver`.
+
+### Forward / Reply
+Implement forwarding and replying to emails. File attachments are already designed to support this, forwarding an email inserts a new `FileAttachmentToEmail` row rather than duplicating the S3 object, with the reference counter tracking active references.
 
 ### Advanced Querying & Filtering
 Implement flexible querying capabilities for inbox management, including:
