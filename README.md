@@ -112,30 +112,23 @@ docker-compose down
 ```
 
 ## 5. Architecture
+```text
 *WPF Client*
-
  ├── *Views*
- 
  ├── *ViewModels*
- 
  ├── *API Services*
- 
  ↓
  
 *ASP.NET API*
-
  ├── *Controllers*
- 
  ├── *Services*
- 
  ├── *Repositories*
- 
  ↓
  
 *SQL Server*
 
-
 *S3 Bucket*
+```
 
 The application is split into a client and a server that communicate over HTTP. The client sends requests with a JWT for authentication; the server validates the token before processing.
 
